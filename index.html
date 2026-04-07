@@ -107,9 +107,8 @@
             text-transform: uppercase;
             backdrop-filter: blur(8px);
             z-index: 1000;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
         }
-        #count-val { font-weight: bold; color: #fff; text-shadow: 0 0 10px #00f2ff; font-family: 'Orbitron', sans-serif; margin-left: 5px; }
+        #count-val { font-weight: bold; color: #ffffff; font-family: 'Orbitron', sans-serif; margin-left: 5px; }
 
         /* --- SLIDER CENTRAL --- */
         .slider-container {
@@ -244,14 +243,14 @@
 
         async function updateCounter() {
             try {
-                // Usando API Dev para maior estabilidade e contagem numérica exata
-                const response = await fetch('https://api.counterapi.dev/v1/gabriel_wrs_global/visitas/increment');
+                // Sincronização global de visitas em tempo real
+                const response = await fetch('https://api.counterapi.dev/v1/wrs_space_official_count/hits/increment');
                 const data = await response.json();
                 if(data.count) {
                     document.getElementById('count-val').innerText = data.count.toLocaleString();
                 }
             } catch (e) {
-                console.log("Erro ao carregar visitas");
+                console.log("Erro na contagem");
             }
         }
 
