@@ -16,7 +16,7 @@
         #star-canvas { z-index: 1; }
         #smoke-canvas { z-index: 9999; }
 
-        /* --- TELA DE ENTRADA (RESTAURADA) --- */
+        /* --- TELA DE ENTRADA --- */
         #login-screen {
             position: fixed; z-index: 100; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); display: flex;
@@ -65,30 +65,20 @@
         }
         .menu-btn:hover { background: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
 
-        /* --- PLAYER SUPER PROFISSIONAL --- */
+        /* --- PLAYER --- */
         .player-card {
             margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px;
             border-radius: 15px; border: 1px solid #00f2ff;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
         }
         .track-info { font-size: 0.65rem; color: #00f2ff; margin-bottom: 10px; text-transform: uppercase; overflow: hidden; white-space: nowrap; }
-        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; position: relative; }
-        .progress-bar { width: 0%; height: 100%; background: #00f2ff; border-radius: 2px; box-shadow: 0 0 10px #00f2ff; transition: width 0.1s linear; }
-        .player-controls { display: flex; justify-content: space-around; align-items: center; }
-        .ctrl-btn { background: none; border: none; color: #00f2ff; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
-        .ctrl-btn:hover { transform: scale(1.2); text-shadow: 0 0 10px #00f2ff; }
-
-        /* --- INTERFACE CENTRAL --- */
-        #profile-stats { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-        .scanner-circle {
-            width: 250px; height: 250px; border: 2px solid rgba(0, 242, 255, 0.2);
-            border-radius: 50%; position: relative; display: flex; justify-content: center; align-items: center;
-            animation: pulse 4s infinite;
-        }
-        .scanner-circle::before {
-            content: ''; width: 110%; height: 110%; border: 2px dashed #00f2ff;
-            border-radius: 50%; position: absolute; animation: spin 10s linear infinite;
-        }
+        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; }
+        .progress-bar { width: 0%; height: 100%; background: #00f2ff; box-shadow: 0 0 8px #00f2ff; }
+        .player-controls { display: flex; justify-content: space-around; align-items: center; margin-bottom: 10px; }
+        .ctrl-btn { background: none; border: none; color: #00f2ff; cursor: pointer; font-size: 1.1rem; }
+        
+        .volume-container { display: flex; align-items: center; gap: 8px; justify-content: center; }
+        .volume-slider { -webkit-appearance: none; width: 60%; height: 3px; background: rgba(0, 242, 255, 0.3); border-radius: 5px; outline: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #00f2ff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 5px #00f2ff; }
 
         /* --- PAINEL DA DIREITA --- */
         #content-right {
@@ -100,16 +90,11 @@
         .btn-voltar {
             background: rgba(255, 255, 255, 0.1); border: 1px solid #00f2ff;
             color: #00f2ff; padding: 8px 15px; border-radius: 5px;
-            cursor: pointer; font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem; margin-bottom: 20px;
+            cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; margin-bottom: 20px;
         }
-
         .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-        .galeria-grid img { width: 100%; border: 1px solid #00f2ff33; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .galeria-grid img:hover { border-color: #00f2ff; transform: translateY(-5px); }
+        .galeria-grid img { width: 100%; border: 1px solid #00f2ff33; border-radius: 8px; cursor: pointer; }
 
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { box-shadow: 0 0 10px #00f2ff22; } 50% { box-shadow: 0 0 30px #00f2ff44; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
@@ -141,7 +126,7 @@
             <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
 
             <div class="player-card">
-                <div class="track-info" id="trackName">Bon Jovi - Livin on a Prayer</div>
+                <div class="track-info" id="trackName">Carregando...</div>
                 <div class="progress-container" onclick="seek(event)">
                     <div class="progress-bar" id="progBar"></div>
                 </div>
@@ -150,22 +135,11 @@
                     <button class="ctrl-btn" id="playBtn" onclick="togglePlay()">⏸</button>
                     <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
                 </div>
-                <audio id="bgMusic" loop ontimeupdate="updateProgress()"></audio>
-            </div>
-        </div>
-
-        <div id="profile-stats">
-            <div class="scanner-circle">
-                <div style="text-align: center;">
-                    <span style="font-size: 0.6rem; color: #00f2ff; display: block;">SCANNING...</span>
-                    <span style="font-size: 1rem; color: #fff;">WRS-SYSTEM</span>
+                <div class="volume-container">
+                    <span style="font-size: 0.7rem; color: #00f2ff;">🔊</span>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
                 </div>
-            </div>
-            <div style="text-align: left; color: #00f2ff; font-size: 0.8rem; margin-top: 30px; line-height: 1.6;">
-                > USER_ID: 1777777<br>
-                > RANK: MAIN OWNER<br>
-                > PARTNER: MNNA (1013) ❤️<br>
-                > STATUS: ONLINE
+                <audio id="bgMusic" loop ontimeupdate="updateProgress()"></audio>
             </div>
         </div>
 
@@ -187,9 +161,15 @@
         let currentTrack = 0;
         const audio = document.getElementById('bgMusic');
 
-        function init() { startStars(); startSmokeEffect(); audio.src = playlist[currentTrack].url; }
+        function init() { 
+            startStars(); 
+            startSmokeEffect(); 
+            audio.src = playlist[currentTrack].url;
+            document.getElementById('trackName').innerText = playlist[currentTrack].name;
+            audio.volume = 0.5;
+        }
 
-        // --- FUNÇÕES DO PLAYER ---
+        // --- PLAYER ---
         function togglePlay() {
             if (audio.paused) { audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
             else { audio.pause(); document.getElementById('playBtn').innerText = "▶"; }
@@ -207,38 +187,35 @@
             bar.style.width = percent + "%";
         }
         function seek(e) {
-            const container = e.currentTarget;
-            const percent = e.offsetX / container.offsetWidth;
+            const percent = e.offsetX / e.currentTarget.offsetWidth;
             audio.currentTime = percent * audio.duration;
         }
+        function setVolume(v) { audio.volume = v; }
 
         // --- INTERFACE ---
         function openRight(mode) {
-            document.getElementById('profile-stats').style.display = 'none';
             const right = document.getElementById('content-right');
             const body = document.getElementById('right-body');
+            const title = document.getElementById('right-title');
             right.style.display = "block";
-            
             if(mode === 'sobre') {
-                document.getElementById('right-title').innerText = "SOBRE MIM";
+                title.innerText = "SOBRE MIM";
                 body.innerHTML = `<div style="color:#00f2ff; line-height:1.8;">Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>Married Mnna (1013) ❤️</div>`;
             } else if(mode === 'fotos') {
-                document.getElementById('right-title').innerText = "MINHAS FOTOS";
+                title.innerText = "MINHAS FOTOS";
                 body.innerHTML = `<div class="galeria-grid">
                     <img src="https://i.imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)">
                     <img src="https://i.imgur.com/7rKeKT8.png" onclick="zoom(this.src)">
                     <img src="https://i.imgur.com/Bx7jSbA.png" onclick="zoom(this.src)">
                     <img src="https://i.imgur.com/HhypJpx.png" onclick="zoom(this.src)">
                     <img src="https://i.imgur.com/sc5uVGA.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/ipooBns.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/pTlq477.png" onclick="zoom(this.src)">
                 </div>`;
             } else {
-                document.getElementById('right-title').innerText = "LISTA DE AMIGOS";
+                title.innerText = "LISTA DE AMIGOS";
                 body.innerHTML = `<div style="color:#00f2ff;">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
             }
         }
-        function closeRight() { document.getElementById('content-right').style.display='none'; document.getElementById('profile-stats').style.display='flex'; }
+        function closeRight() { document.getElementById('content-right').style.display='none'; }
         function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
         // --- EFEITOS ---
@@ -246,7 +223,7 @@
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<200; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*2, speed:Math.random()*0.3});
+            for(let i=0; i<150; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5, speed:Math.random()*0.2});
             function anim() {
                 ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#fff";
                 stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fill(); s.y-=s.speed; if(s.y<0) s.y=canvas.height; });
@@ -258,10 +235,10 @@
             const canvas = document.getElementById('smoke-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; for(let i=0; i<2; i++) smokeParticles.push(new Smoke(mouse.x, mouse.y)); });
+            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; smokeParticles.push(new Smoke(mouse.x, mouse.y)); });
             class Smoke {
-                constructor(x,y) { this.x=x; this.y=y; this.size=Math.random()*5+2; this.op=0.5; this.vx=(Math.random()-0.5)*1; this.vy=(Math.random()-0.5)*1-0.5; }
-                update() { this.x+=this.vx; this.y+=this.vy; this.size+=0.4; this.op-=0.008; }
+                constructor(x,y) { this.x=x; this.y=y; this.size=2; this.op=0.3; this.vx=(Math.random()-0.5)*0.5; this.vy=(Math.random()-0.5)*0.5; }
+                update() { this.x+=this.vx; this.y+=this.vy; this.size+=0.2; this.op-=0.005; }
                 draw() { ctx.globalAlpha=this.op; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
             }
             function anim() {
@@ -283,7 +260,6 @@
                 }, 1000);
             } else { alert("Senha incorreta!"); }
         }
-        window.onresize = () => { location.reload(); };
     </script>
 </body>
 </html>
