@@ -327,16 +327,86 @@
         }
         function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
+        // --- SISTEMA DE PARTÍCULAS ATUALIZADO (EFEITO SUAVE E GRANDES) ---
         function startStars() {
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<150; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5, speed:Math.random()*0.2});
+            
+            // Definição das partículas
+            for(let i=0; i<150; i++) {
+                let sizeValue;
+                // Criação de partículas grandes e desfocadas (estrelas grandes e suaves)
+                if (Math.random() > 0.85) {
+                    // Cerca de 15% das estrelas serão grandes
+                    sizeValue = Math.random() * 5 + 3; // Tamanho entre 3 e 8px
+                } else {
+                    // O restante são estrelas normais
+                    sizeValue = Math.random() * 1.5; // Tamanho até 1.5px
+                }
+
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: sizeValue,
+                    originalSize: sizeValue,
+                    // Velocidade vertical muito lenta
+                    speed: Math.random() * 0.1, 
+                    // Opacidade base aleatória
+                    baseOpacity: Math.random() * 0.5 + 0.1, 
+                    opacity: 0,
+                    // Velocidade de cintilação (pisca-pisca)
+                    twinkleSpeed: Math.random() * 0.02 + 0.005,
+                    // Valor para o seno do pisca-pisca
+                    twinkleValue: Math.random() * Math.PI * 2
+                });
+            }
+
             function anim() {
-                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#fff";
-                stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fill(); s.y-=s.speed; if(s.y<0) s.y=canvas.height; });
+                // Fundo preto e transparente para rastro suave
+                ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
+                ctx.fillRect(0,0,canvas.width,canvas.height); 
+                
+                stars.forEach(s => {
+                    // Cálculo da cintilação (pisca-pisca suave)
+                    s.twinkleValue += s.twinkleSpeed;
+                    s.opacity = s.baseOpacity + Math.sin(s.twinkleValue) * 0.15;
+                    // Garante que a opacidade não fique negativa
+                    s.opacity = Math.max(0, s.opacity);
+
+                    // Desenho da partícula
+                    ctx.beginPath();
+                    // Define a cor com a opacidade calculada
+                    ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                    
+                    // Adiciona um desfoque suave nas estrelas maiores para o efeito desejado
+                    if (s.size > 2) {
+                        ctx.shadowBlur = 4; // Desfoque suave
+                        ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                    } else {
+                        ctx.shadowBlur = 0; // Sem desfoque para estrelas pequenas
+                    }
+
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Reseta o desfoque para as próximas estrelas
+                    ctx.shadowBlur = 0;
+
+                    // Movimento lento
+                    s.y -= s.speed;
+                    // Se a estrela sair pelo topo, ela volta por baixo em uma posição X aleatória
+                    if(s.y < -s.size) {
+                        s.y = canvas.height + s.size;
+                        s.x = Math.random() * canvas.width;
+                    } 
+                });
+                
                 requestAnimationFrame(anim);
-            } anim();
+            }
+            
+            // Inicia a animação
+            anim();
         }
 
         function checkPass() {
