@@ -34,7 +34,6 @@
             margin-bottom: 20px; text-align: center; font-size: 1.1rem;
         }
 
-        /* AJUSTE NO BOTÃO ENTRAR: Removido scale do loop para evitar bug no texto */
         .btn-enter {
             padding: 12px 40px; background: #00f2ff; color: #000;
             border: none; border-radius: 8px; cursor: pointer;
@@ -44,26 +43,14 @@
             animation: neonPulse 1.5s infinite alternate;
             transition: 0.3s;
             backface-visibility: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
         @keyframes neonPulse {
-            from { 
-                box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
-                filter: brightness(1);
-            }
-            to { 
-                box-shadow: 0 0 30px #00f2ff, 0 0 50px #00f2ff; 
-                filter: brightness(1.4);
-            }
+            from { box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff; filter: brightness(1); }
+            to { box-shadow: 0 0 30px #00f2ff, 0 0 50px #00f2ff; filter: brightness(1.4); }
         }
 
-        .btn-enter:hover { 
-            animation: none; 
-            background: #fff; 
-            box-shadow: 0 0 60px #00f2ff; 
-            transform: scale(1.05); /* Scale apenas no hover para estabilidade */
-        }
+        .btn-enter:hover { animation: none; background: #fff; box-shadow: 0 0 60px #00f2ff; transform: scale(1.05); }
 
         /* --- LAYOUT PRINCIPAL --- */
         #main-profile {
@@ -95,10 +82,7 @@
             display: inline-block;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
+        @keyframes gradientShift { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
         .menu-btn {
             width: 100%; padding: 15px; margin: 10px 0; background: transparent;
@@ -106,17 +90,29 @@
             border-radius: 10px; font-family: 'Orbitron', sans-serif;
             transition: 0.3s ease; font-size: 0.85rem;
         }
-        .menu-btn:hover { 
-            background: rgba(0, 242, 255, 0.2); 
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
-            transform: scale(1.05);
+        .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); transform: scale(1.05); }
+
+        /* --- SLIDER CENTRAL (NOVO) --- */
+        .slider-container {
+            flex: 1; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; position: relative;
         }
+        .slideshow {
+            width: 100%; height: 400px; position: relative;
+            perspective: 1000px; display: flex; justify-content: center; align-items: center;
+        }
+        .slide-img {
+            position: absolute; width: 280px; height: 380px;
+            object-fit: cover; border-radius: 15px; border: 2px solid #00f2ff;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+            transition: all 0.8s ease-in-out; opacity: 0;
+        }
+        .slide-img.active { opacity: 1; transform: translateZ(100px); z-index: 5; }
+        .slide-img.prev { opacity: 0.4; transform: translateX(-250px) rotateY(25deg) scale(0.8); z-index: 2; }
+        .slide-img.next { opacity: 0.4; transform: translateX(250px) rotateY(-25deg) scale(0.8); z-index: 2; }
 
         /* --- PLAYER --- */
-        .player-card {
-            margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px;
-            border-radius: 15px; border: 1px solid #00f2ff;
-        }
+        .player-card { margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px; border-radius: 15px; border: 1px solid #00f2ff; }
         .track-info { font-size: 0.65rem; color: #00f2ff; margin-bottom: 10px; text-transform: uppercase; }
         .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; }
         .progress-bar { width: 0%; height: 100%; background: #00f2ff; box-shadow: 0 0 8px #00f2ff; }
@@ -125,29 +121,23 @@
 
         /* --- PAINEL DA DIREITA --- */
         #content-right {
-            flex: 1; background: rgba(0, 0, 0, 0.8);
+            flex: 1; background: rgba(0, 0, 0, 0.85);
             border: 1px solid rgba(0, 242, 255, 0.4); border-radius: 25px;
             padding: 30px; display: none; overflow-y: auto;
             backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
+            position: absolute; right: 40px; top: 40px; bottom: 40px; left: 400px; z-index: 60;
         }
 
-        .header-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
+        .header-right { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px; }
 
         .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
         .galeria-grid img { 
-            width: 100%; border: 1px solid #00f2ff33; border-radius: 8px; cursor: pointer; 
+            width: 100%; border: 1px solid #00f2ff33; border-radius: 8px;
             transition: 0.4s ease; 
+            /* AJUSTE: Cursor de Zoom */
+            cursor: zoom-in;
         }
-        .galeria-grid img:hover { 
-            border-color: #00f2ff; 
-            transform: scale(1.08); 
-            box-shadow: 0 0 15px #00f2ff;
-        }
+        .galeria-grid img:hover { border-color: #00f2ff; transform: scale(1.08); box-shadow: 0 0 15px #00f2ff; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -194,7 +184,11 @@
             </div>
         </div>
 
-        <div style="flex: 1;"></div>
+        <div class="slider-container" id="center-slider">
+            <h3 class="animated-gradient-text" style="margin-bottom: 30px; letter-spacing: 5px;">PROJETOS & DESTAQUES</h3>
+            <div class="slideshow" id="slide-wrap">
+                </div>
+        </div>
 
         <div id="content-right">
             <div class="header-right">
@@ -208,6 +202,12 @@
     <script>
         let stars = [], mouse = { x: 0, y: 0 };
         const dots = [];
+        const fotosGaleria = [
+            "https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", 
+            "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", 
+            "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", 
+            "https://i.imgur.com/pTlq477.png"
+        ];
         const playlist = [
             { name: "Bon Jovi - Livin on a Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" },
             { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=b5bj4smr&dl=1" },
@@ -220,8 +220,37 @@
         function init() { 
             startStars(); 
             startCursorEffect(); 
+            setupSlider();
             audio.src = playlist[currentTrack].url;
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
+        }
+
+        // CONFIGURAÇÃO DO SLIDER AUTOMÁTICO
+        function setupSlider() {
+            const wrap = document.getElementById('slide-wrap');
+            fotosGaleria.forEach((src, i) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = 'slide-img';
+                wrap.appendChild(img);
+            });
+            
+            let idx = 0;
+            const slides = document.querySelectorAll('.slide-img');
+            
+            function updateSlider() {
+                slides.forEach(s => s.className = 'slide-img');
+                const prev = (idx - 1 + slides.length) % slides.length;
+                const next = (idx + 1) % slides.length;
+                
+                slides[idx].classList.add('active');
+                slides[prev].classList.add('prev');
+                slides[next].classList.add('next');
+                
+                idx = (idx + 1) % slides.length;
+            }
+            updateSlider();
+            setInterval(updateSlider, 3000);
         }
 
         function startCursorEffect() {
@@ -265,6 +294,7 @@
             const rightTitle = document.getElementById('right-title');
             const body = document.getElementById('right-body');
             document.getElementById('content-right').style.display = "block";
+            document.getElementById('center-slider').style.visibility = "hidden"; // Esconde o slider ao abrir abas
             rightTitle.className = "animated-gradient-text";
             rightTitle.style.color = ""; 
 
@@ -273,21 +303,21 @@
                 body.innerHTML = `<div style="color:#00f2ff; line-height:1.8;">Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>Married Mnna (1013) ❤️</div>`;
             } else if(mode === 'fotos') {
                 rightTitle.innerText = "MINHAS FOTOS";
-                body.innerHTML = `<div class="galeria-grid">
-                    <img src="https://i.imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/7rKeKT8.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/Bx7jSbA.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/HhypJpx.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/sc5uVGA.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/ipooBns.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/pTlq477.png" onclick="zoom(this.src)">
-                </div>`;
+                let gridHTML = `<div class="galeria-grid">`;
+                fotosGaleria.forEach(src => {
+                    gridHTML += `<img src="${src}" onclick="zoom(this.src)">`;
+                });
+                gridHTML += `</div>`;
+                body.innerHTML = gridHTML;
             } else {
                 rightTitle.innerText = "LISTA DE AMIGOS";
                 body.innerHTML = `<div style="color:#00f2ff;">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
             }
         }
-        function closeRight() { document.getElementById('content-right').style.display='none'; }
+        function closeRight() { 
+            document.getElementById('content-right').style.display='none'; 
+            document.getElementById('center-slider').style.visibility = "visible";
+        }
         function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
         function startStars() {
