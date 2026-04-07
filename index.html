@@ -7,93 +7,221 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
 
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #000;
-            font-family: 'Orbitron', sans-serif; color: #fff;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
         }
 
-        #star-canvas, #smoke-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        #star-canvas, #cursor-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
         #star-canvas { z-index: 1; }
-        #smoke-canvas { z-index: 9999; }
+        #cursor-canvas { z-index: 9999; }
 
         /* --- TELA DE ENTRADA --- */
         #login-screen {
-            position: fixed; z-index: 100; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
+            position: fixed;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transition: opacity 1s ease;
         }
+
         .login-box {
-            background: rgba(10, 10, 20, 0.8); padding: 40px; border-radius: 20px;
-            border: 2px solid rgba(0, 242, 255, 0.4); text-align: center;
-            backdrop-filter: blur(15px); box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+            background: rgba(10, 10, 20, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 242, 255, 0.4);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
         }
+
         input[type="password"] {
-            padding: 12px; border-radius: 8px; border: 1px solid #00f2ff;
-            outline: none; background: rgba(0, 0, 0, 0.8); color: #00f2ff;
-            margin-bottom: 20px; text-align: center; font-size: 1.1rem;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #00f2ff;
+            outline: none;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00f2ff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1rem;
         }
+
         .btn-enter {
-            padding: 12px 40px; background: #00f2ff; color: #000;
-            border: none; border-radius: 8px; cursor: pointer;
-            font-weight: bold; text-transform: uppercase; box-shadow: 0 0 20px #00f2ff;
+            padding: 12px 40px;
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px #00f2ff;
         }
 
         /* --- LAYOUT PRINCIPAL --- */
         #main-profile {
-            display: none; opacity: 0; z-index: 50; position: relative;
-            display: flex; height: 100vh; padding: 40px; box-sizing: border-box;
-            gap: 40px; transition: opacity 1.5s;
+            display: none;
+            opacity: 0;
+            z-index: 50;
+            position: relative;
+            display: flex;
+            height: 100vh;
+            padding: 40px;
+            box-sizing: border-box;
+            gap: 40px;
+            transition: opacity 1.5s;
         }
 
         .sidebar {
-            width: 320px; background: rgba(0, 0, 0, 0.85);
-            border: 1px solid rgba(0, 242, 255, 0.5); border-radius: 25px;
-            padding: 25px; text-align: center; backdrop-filter: blur(10px);
+            width: 320px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(0, 242, 255, 0.5);
+            border-radius: 25px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
             height: fit-content;
         }
+
         .profile-pic {
-            width: 180px; height: 180px; border-radius: 20px;
-            border: 3px solid #00f2ff; box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
-            object-fit: cover; margin-bottom: 20px;
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            border: 3px solid #00f2ff;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
+            object-fit: cover;
+            margin-bottom: 20px;
         }
+
         .menu-btn {
-            width: 100%; padding: 15px; margin: 10px 0; background: transparent;
-            border: 2px solid #00f2ff; color: #00f2ff; cursor: pointer;
-            border-radius: 10px; font-family: 'Orbitron', sans-serif;
-            transition: 0.3s; font-size: 0.85rem;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: transparent;
+            border: 2px solid #00f2ff;
+            color: #00f2ff;
+            cursor: pointer;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            transition: 0.3s;
+            font-size: 0.85rem;
         }
         .menu-btn:hover { background: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
 
-        /* --- PLAYER --- */
-        .player-card {
-            margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px;
-            border-radius: 15px; border: 1px solid #00f2ff;
-        }
-        .track-info { font-size: 0.65rem; color: #00f2ff; margin-bottom: 10px; text-transform: uppercase; overflow: hidden; white-space: nowrap; }
-        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; }
-        .progress-bar { width: 0%; height: 100%; background: #00f2ff; box-shadow: 0 0 8px #00f2ff; }
-        .player-controls { display: flex; justify-content: space-around; align-items: center; margin-bottom: 10px; }
-        .ctrl-btn { background: none; border: none; color: #00f2ff; cursor: pointer; font-size: 1.1rem; }
-        
-        .volume-container { display: flex; align-items: center; gap: 8px; justify-content: center; }
-        .volume-slider { -webkit-appearance: none; width: 60%; height: 3px; background: rgba(0, 242, 255, 0.3); border-radius: 5px; outline: none; }
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #00f2ff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 5px #00f2ff; }
-
         /* --- PAINEL DA DIREITA --- */
         #content-right {
-            flex: 1; background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(0, 242, 255, 0.3); border-radius: 25px;
-            padding: 30px; display: none; overflow-y: auto;
-            backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
+            flex: 1;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            border-radius: 25px;
+            padding: 30px;
+            display: none;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease;
+            position: relative;
         }
+
         .btn-voltar {
-            background: rgba(255, 255, 255, 0.1); border: 1px solid #00f2ff;
-            color: #00f2ff; padding: 8px 15px; border-radius: 5px;
-            cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00f2ff;
+            color: #00f2ff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: 0.3s;
         }
-        .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-        .galeria-grid img { width: 100%; border: 1px solid #00f2ff33; border-radius: 8px; cursor: pointer; }
+        .btn-voltar:hover { background: #00f2ff; color: #000; }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .galeria-grid img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 242, 255, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .galeria-grid img:hover { border-color: #00f2ff; transform: scale(1.03); }
+
+        .amigos-list-right, .sobre-mim-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #00f2ff;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+
+        /* --- LIGHTBOX --- */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 3px solid #00f2ff; border-radius: 15px; box-shadow: 0 0 50px #00f2ff; }
+
+        /* --- RADIO / PLAYER --- */
+        .player-card {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid #00f2ff;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+        }
+        
+        .playlist-select {
+            width: 100%;
+            background: #000;
+            color: #00f2ff;
+            border: 1px solid #00f2ff;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        audio {
+            width: 100%;
+            height: 35px;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.5) drop-shadow(0 0 5px #00f2ff);
+        }
+
+        .counter-box { position: fixed; bottom: 25px; right: 40px; color: #00f2ff; font-size: 0.8rem; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -101,10 +229,10 @@
 <body onload="init()">
 
     <canvas id="star-canvas"></canvas>
-    <canvas id="smoke-canvas"></canvas>
+    <canvas id="cursor-canvas"></canvas>
 
-    <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
-        <img id="lightbox-img" src="" style="max-width:90%; max-height:90%; border:2px solid #00f2ff; border-radius:10px;">
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="">
     </div>
 
     <div id="login-screen">
@@ -119,111 +247,83 @@
     <div id="main-profile">
         <div class="sidebar">
             <img src="https://i.imgur.com/Ip2Bdxv.png" class="profile-pic">
-            <h2 style="text-shadow: 0 0 15px #00f2ff; font-size: 1.2rem;">Gabriel Leandro</h2>
+            <h2 style="text-shadow: 0 0 15px #00f2ff; font-size: 1.3rem;">Gabriel Leandro</h2>
             
             <button class="menu-btn" onclick="openRight('sobre')">SOBRE MIM</button>
             <button class="menu-btn" onclick="openRight('amigos')">AMIGOS</button>
             <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
 
             <div class="player-card">
-                <div class="track-info" id="trackName">Carregando...</div>
-                <div class="progress-container" onclick="seek(event)">
-                    <div class="progress-bar" id="progBar"></div>
-                </div>
-                <div class="player-controls">
-                    <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
-                    <button class="ctrl-btn" id="playBtn" onclick="togglePlay()">⏸</button>
-                    <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
-                </div>
-                <div class="volume-container">
-                    <span style="font-size: 0.7rem; color: #00f2ff;">🔊</span>
-                    <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
-                </div>
-                <audio id="bgMusic" loop ontimeupdate="updateProgress()"></audio>
+                <select id="playlist" class="playlist-select" onchange="changeMusic()">
+                    <option value="https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1">Bon Jovi - Livin on a Prayer</option>
+                    <option value="https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=b5bj4smr&dl=1">Desireless - Voyage Voyage</option>
+                    <option value="https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=tawfqj0e&dl=1">Eminem - You Dont Know</option>
+                    <option value="https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=hbwtvdvf&dl=1">Disturbed - Sound of Silence</option>
+                </select>
+                <audio id="bgMusic" controls loop>
+                    <source src="https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" type="audio/mpeg">
+                </audio>
             </div>
         </div>
 
         <div id="content-right">
-            <button class="btn-voltar" onclick="closeRight()">← VOLTAR PARA A PÁGINA</button>
+            <button class="btn-voltar" onclick="document.getElementById('content-right').style.display='none'">← VOLTAR PARA A PÁGINA</button>
             <h2 id="right-title" style="color: #00f2ff; border-bottom: 1px solid #00f2ff33; padding-bottom: 10px; margin-top: 0;"></h2>
             <div id="right-body"></div>
         </div>
+
+        <div class="counter-box">VISITAS: <span id="visitCount">0</span></div>
     </div>
 
     <script>
-        let stars = [], smokeParticles = [], mouse = { x: -100, y: -100 };
-        const playlist = [
-            { name: "Bon Jovi - Livin on a Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" },
-            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=b5bj4smr&dl=1" },
-            { name: "Eminem - You Dont Know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=tawfqj0e&dl=1" },
-            { name: "Disturbed - Sound of Silence", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=hbwtvdvf&dl=1" }
-        ];
-        let currentTrack = 0;
-        const audio = document.getElementById('bgMusic');
+        let stars = [], particles = [], mouse = { x: -100, y: -100 };
 
-        function init() { 
-            startStars(); 
-            startSmokeEffect(); 
-            audio.src = playlist[currentTrack].url;
-            document.getElementById('trackName').innerText = playlist[currentTrack].name;
-            audio.volume = 0.5;
-        }
+        function init() { startStars(); startCursorEffect(); }
 
-        // --- PLAYER ---
-        function togglePlay() {
-            if (audio.paused) { audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
-            else { audio.pause(); document.getElementById('playBtn').innerText = "▶"; }
-        }
-        function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(); }
-        function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(); }
-        function loadTrack() {
-            audio.src = playlist[currentTrack].url;
-            document.getElementById('trackName').innerText = playlist[currentTrack].name;
-            audio.play(); document.getElementById('playBtn').innerText = "⏸";
-        }
-        function updateProgress() {
-            const bar = document.getElementById('progBar');
-            const percent = (audio.currentTime / audio.duration) * 100;
-            bar.style.width = percent + "%";
-        }
-        function seek(e) {
-            const percent = e.offsetX / e.currentTarget.offsetWidth;
-            audio.currentTime = percent * audio.duration;
-        }
-        function setVolume(v) { audio.volume = v; }
-
-        // --- INTERFACE ---
         function openRight(mode) {
             const right = document.getElementById('content-right');
-            const body = document.getElementById('right-body');
             const title = document.getElementById('right-title');
+            const body = document.getElementById('right-body');
             right.style.display = "block";
+            
             if(mode === 'sobre') {
                 title.innerText = "SOBRE MIM";
-                body.innerHTML = `<div style="color:#00f2ff; line-height:1.8;">Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>Married Mnna (1013) ❤️</div>`;
+                body.innerHTML = `
+                    <div class="sobre-mim-text">
+                        Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>
+                        Married Mnna (1013) ❤️
+                    </div>`;
             } else if(mode === 'fotos') {
                 title.innerText = "MINHAS FOTOS";
-                body.innerHTML = `<div class="galeria-grid">
-                    <img src="https://i.imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/7rKeKT8.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/Bx7jSbA.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/HhypJpx.png" onclick="zoom(this.src)">
-                    <img src="https://i.imgur.com/sc5uVGA.png" onclick="zoom(this.src)">
-                </div>`;
+                body.innerHTML = `
+                    <div class="galeria-grid">
+                        <img src="https://imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/7rKeKT8.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/Bx7jSbA.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/HhypJpx.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/sc5uVGA.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/ipooBns.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/pTlq477.png" onclick="zoom(this.src)">
+                    </div>`;
             } else {
                 title.innerText = "LISTA DE AMIGOS";
-                body.innerHTML = `<div style="color:#00f2ff;">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
+                body.innerHTML = `
+                    <div class="amigos-list-right">
+                        • Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando
+                    </div>`;
             }
         }
-        function closeRight() { document.getElementById('content-right').style.display='none'; }
-        function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
-        // --- EFEITOS ---
+        function zoom(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
         function startStars() {
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i=0; i<150; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5, speed:Math.random()*0.2});
+            for(let i = 0; i < 300; i++) stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*2, speed: Math.random()*0.4+0.1 });
             function anim() {
                 ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#fff";
                 stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fill(); s.y-=s.speed; if(s.y<0) s.y=canvas.height; });
@@ -231,35 +331,85 @@
             } anim();
         }
 
-        function startSmokeEffect() {
-            const canvas = document.getElementById('smoke-canvas');
+        // --- EFEITO PROFISSIONAL DE CURSOR ---
+        function startCursorEffect() {
+            const canvas = document.getElementById('cursor-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; smokeParticles.push(new Smoke(mouse.x, mouse.y)); });
-            class Smoke {
-                constructor(x,y) { this.x=x; this.y=y; this.size=2; this.op=0.3; this.vx=(Math.random()-0.5)*0.5; this.vy=(Math.random()-0.5)*0.5; }
-                update() { this.x+=this.vx; this.y+=this.vy; this.size+=0.2; this.op-=0.005; }
-                draw() { ctx.globalAlpha=this.op; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
-            }
+            
+            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
             function anim() {
                 ctx.clearRect(0,0,canvas.width,canvas.height);
-                for(let i=0; i<smokeParticles.length; i++) {
-                    smokeParticles[i].update(); smokeParticles[i].draw();
-                    if(smokeParticles[i].op<=0) { smokeParticles.splice(i,1); i--; }
-                } requestAnimationFrame(anim);
+                
+                // Cria nova partícula apenas se o mouse estiver na tela
+                if(mouse.x > 0) {
+                    particles.push({ 
+                        x: mouse.x, 
+                        y: mouse.y, 
+                        size: Math.random() * 5 + 2, 
+                        spdX: (Math.random() - 0.5) * 1.5, 
+                        spdY: (Math.random() - 0.5) * 1.5, 
+                        alpha: 1,
+                        color: `0, 242, 255` 
+                    });
+                }
+
+                for(let i=0; i<particles.length; i++){
+                    let p = particles[i];
+                    p.x += p.spdX;
+                    p.y += p.spdY;
+                    p.alpha -= 0.015; // Desaparecimento suave
+                    p.size *= 0.96;   // Encolhimento suave
+
+                    if(p.alpha <= 0 || p.size < 0.5) { 
+                        particles.splice(i, 1); 
+                        i--; 
+                        continue; 
+                    }
+
+                    // Desenho com brilho (glow)
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = `rgb(${p.color})`;
+                    ctx.fillStyle = `rgb(${p.color})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+                requestAnimationFrame(anim);
             } anim();
         }
 
         function checkPass() {
             if(document.getElementById('passInput').value === "1009") {
-                document.getElementById('login-screen').style.opacity='0';
+                document.getElementById('login-screen').style.opacity = '0';
                 setTimeout(() => {
-                    document.getElementById('login-screen').style.display='none';
-                    document.getElementById('main-profile').style.display='flex';
-                    setTimeout(() => { document.getElementById('main-profile').style.opacity='1'; audio.play(); }, 50);
+                    document.getElementById('login-screen').style.display = 'none';
+                    const main = document.getElementById('main-profile');
+                    main.style.display = 'flex';
+                    setTimeout(() => { main.style.opacity = '1'; document.getElementById('bgMusic').play(); }, 50);
                 }, 1000);
+                let v = (parseInt(localStorage.getItem('v_count')) || 0) + 1;
+                localStorage.setItem('v_count', v);
+                document.getElementById('visitCount').innerText = v;
             } else { alert("Senha incorreta!"); }
         }
+
+        function changeMusic() {
+            const audio = document.getElementById('bgMusic');
+            audio.src = document.getElementById('playlist').value;
+            audio.play();
+        }
+
+        window.onresize = () => {
+            const sc = document.getElementById('star-canvas');
+            const cc = document.getElementById('cursor-canvas');
+            sc.width = window.innerWidth; sc.height = window.innerHeight;
+            cc.width = window.innerWidth; cc.height = window.innerHeight;
+        };
     </script>
 </body>
 </html>
