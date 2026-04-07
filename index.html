@@ -10,11 +10,10 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background-color: #000;
             font-family: 'Orbitron', sans-serif; color: #fff;
-            cursor: none;
+            cursor: default;
         }
 
         #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        #cursor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20000; }
 
         /* --- TELA DE ENTRADA --- */
         #login-screen {
@@ -92,19 +91,11 @@
         }
         .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); transform: scale(1.05); }
 
-        /* --- CONTADOR DE VISITAS (CANTO INFERIOR DIREITO) --- */
         #visit-counter {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000001;
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid #00f2ff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            display: none;
-            flex-direction: column;
-            align-items: center;
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000001;
+            background: rgba(0, 0, 0, 0.9); border: 1px solid #00f2ff;
+            padding: 6px 12px; border-radius: 4px; display: none;
+            flex-direction: column; align-items: center;
         }
 
         /* --- SLIDER CENTRAL --- */
@@ -154,7 +145,6 @@
 <body onload="init()">
 
     <canvas id="star-canvas"></canvas>
-    <canvas id="cursor-canvas"></canvas>
 
     <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:15000; justify-content:center; align-items:center;">
         <img id="lightbox-img" src="" style="max-width:90%; max-height:90%; border:2px solid #00f2ff; border-radius:10px;">
@@ -213,11 +203,8 @@
     </div>
 
     <script>
-        // CHAVE ÚNICA PARA ESTE PERFIL (Não mistura com a Galeria)
         const ID_VISITAS = "perfil_gabriel_2026_unique"; 
-        
-        let stars = [], mouse = { x: 0, y: 0 };
-        const dots = [];
+        let stars = [];
         const fotosGaleria = [
             "https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", 
             "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", 
@@ -235,7 +222,6 @@
 
         function init() { 
             startStars(); 
-            startCursorEffect(); 
             setupSlider();
             audio.src = playlist[currentTrack].url;
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
@@ -243,7 +229,6 @@
 
         async function carregarContadores() {
             try {
-                // Aqui ele cria uma contagem separada na API
                 const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
                 const dataV = await resV.json();
                 document.getElementById('count-number').innerText = dataV.count || dataV.value;
@@ -273,27 +258,6 @@
                 }
             }
             updateSlider(); setInterval(updateSlider, 3000);
-        }
-
-        function startCursorEffect() {
-            const canvas = document.getElementById('cursor-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for (let i = 0; i < 15; i++) dots.push({ x: 0, y: 0 });
-            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let x = mouse.x, y = mouse.y;
-                dots.forEach((dot, index) => {
-                    const nextDot = dots[index + 1] || dots[0];
-                    dot.x = x; dot.y = y;
-                    ctx.beginPath(); ctx.arc(dot.x, dot.y, (15 - index) / 3, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(0, 242, 255, ${1 - index / 15})`;
-                    ctx.fill();
-                    x += (nextDot.x - dot.x) * 0.5; y += (nextDot.y - dot.y) * 0.5;
-                });
-                requestAnimationFrame(draw);
-            } draw();
         }
 
         function togglePlay() {
@@ -357,11 +321,7 @@
                     document.getElementById('main-profile').style.display='flex';
                     document.getElementById('visit-counter').style.display='flex';
                     carregarContadores();
-                    
-                    setTimeout(() => { 
-                        document.getElementById('main-profile').style.opacity='1'; 
-                        audio.play(); 
-                    }, 50);
+                    setTimeout(() => { document.getElementById('main-profile').style.opacity='1'; audio.play(); }, 50);
                 }, 1000);
             } else { alert("Senha incorreta!"); }
         }
