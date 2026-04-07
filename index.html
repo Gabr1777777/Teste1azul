@@ -15,31 +15,32 @@
             cursor: default;
         }
 
-        /* --- EFEITO DE LUZES (CORRIGIDO: AGORA NO FUNDO) --- */
+        /* --- EFEITO DE LUZES (VISÍVEL E NO FUNDO) --- */
         .light-effect-layer {
             position: fixed; top: -150%; left: -150%; width: 400%; height: 400%;
-            background: linear-gradient(135deg, transparent 40%, var(--main-color) 48%, #ffffff 50%, var(--main-color) 52%, transparent 60%);
-            animation: lightSweep 15s linear infinite; pointer-events: none; 
-            z-index: -1; /* Joga para trás de tudo */
-            opacity: 0.15;
-            filter: blur(80px); /* Usando filter em vez de backdrop para não sumir com o resto */
+            /* Aumentei a nitidez do gradiente para aparecer mais */
+            background: linear-gradient(135deg, transparent 42%, var(--main-color) 49%, #ffffff 50%, var(--main-color) 51%, transparent 58%);
+            animation: lightSweep 12s linear infinite; pointer-events: none; 
+            z-index: -1; 
+            opacity: 0.4; /* Opacidade aumentada para ser bem visível */
+            filter: blur(60px); /* Blur ajustado para não dissipar a luz demais */
         }
 
         @keyframes lightSweep {
-            0% { transform: translate(-25%, -25%) rotate(0deg); }
-            100% { transform: translate(0%, 0%) rotate(360deg); }
+            0% { transform: translate(-20%, -20%) rotate(0deg); }
+            100% { transform: translate(10%, 10%) rotate(360deg); }
         }
 
         .ambient-light {
             position: fixed; width: 100%; height: 100%; top: 0; left: 0;
-            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, transparent 70%);
+            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, transparent 75%);
             opacity: 0; pointer-events: none; z-index: -2;
-            animation: ambientPulse 12s ease-in-out infinite;
+            animation: ambientPulse 10s ease-in-out infinite;
         }
 
         @keyframes ambientPulse {
             0%, 100% { opacity: 0; }
-            50% { opacity: 0.2; }
+            50% { opacity: 0.25; }
         }
 
         #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
@@ -223,7 +224,6 @@
     </div>
 
     <script>
-        const ID_VISITAS = "perfil_gabriel_2026_unique"; 
         const cores = ["#00f2ff", "#ff0000", "#ffff00", "#00ff00", "#ff00ff", "#ff8800", "#ffffff"];
         let corIndex = 0;
 
