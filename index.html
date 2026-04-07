@@ -28,29 +28,55 @@
         #star-canvas { z-index: 1; }
         #cursor-canvas { z-index: 9999; }
 
-        /* LOGIN */
+        /* --- TELA DE ENTRADA --- */
         #login-screen {
             position: fixed;
-            z-index: 1000;
+            z-index: 100;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 1s;
-        }
-        .login-box {
-            background: rgba(10, 10, 30, 0.8);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid #00f2ff;
-            text-align: center;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.3);
+            transition: opacity 1s ease;
         }
 
-        /* LAYOUT PRINCIPAL */
+        .login-box {
+            background: rgba(10, 10, 20, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 242, 255, 0.4);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        }
+
+        input[type="password"] {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #00f2ff;
+            outline: none;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00f2ff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .btn-enter {
+            padding: 12px 40px;
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px #00f2ff;
+        }
+
+        /* --- LAYOUT PRINCIPAL --- */
         #main-profile {
             display: none;
             opacity: 0;
@@ -64,90 +90,99 @@
             transition: opacity 1.5s;
         }
 
-        /* SIDEBAR ESQUERDA */
         .sidebar {
             width: 320px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(0, 242, 255, 0.4);
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(0, 242, 255, 0.5);
             border-radius: 25px;
             padding: 25px;
             text-align: center;
             backdrop-filter: blur(10px);
             height: fit-content;
         }
+
         .profile-pic {
             width: 180px;
             height: 180px;
             border-radius: 20px;
             border: 3px solid #00f2ff;
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
             object-fit: cover;
             margin-bottom: 20px;
         }
 
-        /* CONTEÚDO DIREITA (GALERIA) */
-        #content-right {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 25px;
-            padding: 30px;
-            display: none; /* Oculto até clicar */
-            overflow-y: auto;
-            backdrop-filter: blur(10px);
-            animation: fadeInRight 0.8s ease forwards;
-        }
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .galeria-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .galeria-grid img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 15px;
-            border: 2px solid rgba(0, 242, 255, 0.3);
-            transition: 0.4s;
-            cursor: pointer;
-        }
-        .galeria-grid img:hover {
-            transform: scale(1.05);
-            border-color: #00f2ff;
-            box-shadow: 0 0 20px #00f2ff;
-        }
-
-        /* BOTOES */
         .menu-btn {
             width: 100%;
             padding: 15px;
             margin: 10px 0;
-            background: rgba(0, 242, 255, 0.05);
-            border: 1px solid #00f2ff;
+            background: transparent;
+            border: 2px solid #00f2ff;
             color: #00f2ff;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
             transition: 0.3s;
         }
-        .menu-btn:hover { background: #00f2ff; color: #000; box-shadow: 0 0 20px #00f2ff; }
+        .menu-btn:hover { background: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
 
-        /* PLAYER CUSTOMIZADO */
+        /* --- PAINEL DA DIREITA --- */
+        #content-right {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            border-radius: 25px;
+            padding: 30px;
+            display: none;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .galeria-grid img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 242, 255, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .galeria-grid img:hover { border-color: #00f2ff; transform: scale(1.03); }
+
+        .amigos-list-right {
+            font-size: 1.2rem;
+            line-height: 2.5;
+            color: #00f2ff;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+
+        /* --- LIGHTBOX --- */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 3px solid #00f2ff; border-radius: 15px; box-shadow: 0 0 50px #00f2ff; }
+
+        /* --- RADIO / PLAYER (CORES SINCRONIZADAS) --- */
         .player-card {
             margin-top: 30px;
-            background: linear-gradient(145deg, rgba(0, 10, 30, 0.9), rgba(0, 40, 80, 0.4));
+            background: rgba(0, 0, 0, 0.9);
             padding: 15px;
             border-radius: 20px;
-            border: 1px solid rgba(0, 242, 255, 0.5);
-            box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2);
+            border: 2px solid #00f2ff;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
         }
-        .player-card label { font-size: 0.7rem; color: #00f2ff; display: block; margin-bottom: 8px; letter-spacing: 2px; }
         
         .playlist-select {
             width: 100%;
@@ -155,9 +190,17 @@
             color: #00f2ff;
             border: 1px solid #00f2ff;
             padding: 8px;
-            font-family: 'Roboto', sans-serif;
             border-radius: 5px;
             margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .playlist-select option {
+            background: #000;
+            color: #00f2ff;
         }
 
         audio {
@@ -166,7 +209,9 @@
             filter: invert(100%) hue-rotate(180deg) brightness(1.5) drop-shadow(0 0 5px #00f2ff);
         }
 
-        .counter-box { position: fixed; bottom: 20px; right: 40px; color: #00f2ff; font-size: 0.7rem; opacity: 0.7; }
+        .counter-box { position: fixed; bottom: 25px; right: 40px; color: #00f2ff; font-size: 0.8rem; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body onload="init()">
@@ -174,29 +219,28 @@
     <canvas id="star-canvas"></canvas>
     <canvas id="cursor-canvas"></canvas>
 
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="">
+    </div>
+
     <div id="login-screen">
         <div class="login-box">
-            <h2>ACESSO GABRIEL</h2>
+            <h2 style="color: #00f2ff;">LOGIN</h2>
             <input type="password" id="passInput" placeholder="SENHA">
             <br>
-            <button class="btn-enter" onclick="checkPass()" style="padding: 12px 40px; cursor: pointer;">ENTRAR</button>
+            <button class="btn-enter" onclick="checkPass()">Entrar</button>
         </div>
     </div>
 
     <div id="main-profile">
         <div class="sidebar">
             <img src="https://i.imgur.com/Ip2Bdxv.png" class="profile-pic">
-            <h2 style="text-shadow: 0 0 15px #00f2ff; font-size: 1.2rem;">Gabriel Leandro</h2>
+            <h2 style="text-shadow: 0 0 15px #00f2ff; font-size: 1.3rem;">Gabriel Leandro</h2>
             
-            <button class="menu-btn" onclick="toggleSection('amigos')">Amigos</button>
-            <button class="menu-btn" onclick="toggleSection('fotos')">Fotos</button>
-
-            <div id="amigos-list" style="display:none; font-size: 0.9rem; margin: 15px 0; text-align: left; background: rgba(0,242,255,0.1); padding: 10px; border-radius: 10px;">
-                • Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando
-            </div>
+            <button class="menu-btn" onclick="openRight('amigos')">AMIGOS</button>
+            <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
 
             <div class="player-card">
-                <label>SISTEMA DE ÁUDIO</label>
                 <select id="playlist" class="playlist-select" onchange="changeMusic()">
                     <option value="https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1">Bon Jovi - Livin on a Prayer</option>
                     <option value="https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=b5bj4smr&dl=1">Desireless - Voyage Voyage</option>
@@ -210,88 +254,81 @@
         </div>
 
         <div id="content-right">
-            <h3 id="right-title" style="color: #00f2ff; border-bottom: 1px solid #00f2ff; padding-bottom: 10px;">GALERIA</h3>
-            <div id="fotos-grid" class="galeria-grid">
-                <img src="https://imgur.com/Ip2Bdxv.png">
-                <img src="https://imgur.com/7rKeKT8.png">
-                <img src="https://imgur.com/Bx7jSbA.png">
-                <img src="https://imgur.com/HhypJpx.png">
-                <img src="https://imgur.com/sc5uVGA.png">
-                <img src="https://imgur.com/ipooBns.png">
-                <img src="https://imgur.com/pTlq477.png">
-            </div>
+            <h2 id="right-title" style="color: #00f2ff; border-bottom: 1px solid #00f2ff33; padding-bottom: 10px;"></h2>
+            <div id="right-body"></div>
         </div>
 
         <div class="counter-box">VISITAS: <span id="visitCount">0</span></div>
     </div>
 
     <script>
-        let stars = [];
-        let particles = [];
-        let mouse = { x: -100, y: -100 };
+        let stars = [], particles = [], mouse = { x: -100, y: -100 };
 
-        function init() {
-            startStars();
-            startCursorEffect();
-        }
+        function init() { startStars(); startCursorEffect(); }
 
-        // --- SISTEMA DE SEÇÕES ---
-        function toggleSection(type) {
+        function openRight(mode) {
             const right = document.getElementById('content-right');
-            const amigos = document.getElementById('amigos-list');
+            const title = document.getElementById('right-title');
+            const body = document.getElementById('right-body');
+            right.style.display = "block";
             
-            if(type === 'fotos') {
-                right.style.display = (right.style.display === 'block') ? 'none' : 'block';
-                amigos.style.display = 'none';
+            if(mode === 'fotos') {
+                title.innerText = "MINHAS FOTOS";
+                body.innerHTML = `
+                    <div class="galeria-grid">
+                        <img src="https://imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/7rKeKT8.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/Bx7jSbA.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/HhypJpx.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/sc5uVGA.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/ipooBns.png" onclick="zoom(this.src)">
+                        <img src="https://imgur.com/pTlq477.png" onclick="zoom(this.src)">
+                    </div>`;
             } else {
-                amigos.style.display = (amigos.style.display === 'block') ? 'none' : 'block';
-                right.style.display = 'none';
+                title.innerText = "LISTA DE AMIGOS";
+                body.innerHTML = `
+                    <div class="amigos-list-right">
+                        • Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando
+                    </div>`;
             }
         }
 
-        // --- ESTRELAS ---
+        function zoom(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
         function startStars() {
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            for(let i = 0; i < 300; i++) {
-                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.4 + 0.1 });
-            }
+            for(let i = 0; i < 300; i++) stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*2, speed: Math.random()*0.4+0.1 });
             function anim() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#fff";
-                stars.forEach(s => {
-                    ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
-                    s.y -= s.speed; if(s.y < 0) s.y = canvas.height;
-                });
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#fff";
+                stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fill(); s.y-=s.speed; if(s.y<0) s.y=canvas.height; });
                 requestAnimationFrame(anim);
-            }
-            anim();
+            } anim();
         }
 
-        // --- MOUSE ---
         function startCursorEffect() {
             const canvas = document.getElementById('cursor-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             window.onmousemove = e => { mouse.x = e.clientX; mouse.y = e.clientY; };
             function anim() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                if(mouse.x > 0) particles.push({ x: mouse.x, y: mouse.y, size: Math.random()*3+1, spdX: (Math.random()-0.5)*2, spdY: (Math.random()-0.5)*2, alpha: 1 });
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                if(mouse.x > 0) particles.push({ x:mouse.x, y:mouse.y, size:Math.random()*3+1, spdX:(Math.random()-0.5)*2, spdY:(Math.random()-0.5)*2, alpha:1 });
                 for(let i=0; i<particles.length; i++){
-                    let p = particles[i]; p.x += p.spdX; p.y += p.spdY; p.alpha -= 0.02;
+                    let p = particles[i]; p.x+=p.spdX; p.y+=p.spdY; p.alpha-=0.02;
                     if(p.alpha<=0) { particles.splice(i,1); i--; continue; }
-                    ctx.fillStyle = `rgba(0, 242, 255, ${p.alpha})`;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle=`rgba(0, 242, 255, ${p.alpha})`; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill();
                 }
                 requestAnimationFrame(anim);
-            }
-            anim();
+            } anim();
         }
 
-        // --- LOGIN & UTIL ---
         function checkPass() {
-            if (document.getElementById('passInput').value === "1009") {
+            if(document.getElementById('passInput').value === "1009") {
                 document.getElementById('login-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('login-screen').style.display = 'none';
@@ -310,8 +347,6 @@
             audio.src = document.getElementById('playlist').value;
             audio.play();
         }
-
-        window.onresize = () => { location.reload(); };
     </script>
 </body>
 </html>
