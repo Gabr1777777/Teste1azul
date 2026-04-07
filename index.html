@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>XatSpace Premium</title>
+    <title>XatSpace - Gabriel Leandro</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
 
@@ -17,13 +17,24 @@
             color: #fff;
         }
 
+        /* --- FUNDO DE ESTRELAS (Sempre visível) --- */
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Fica atrás de tudo */
+            display: block;
+        }
+
         /* --- TELA DE LOGIN --- */
         #login-screen {
             position: fixed;
             z-index: 100;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, #0a0a2e 0%, #000 100%);
+            background: rgba(0, 0, 0, 0.7); /* Transparente para ver as estrelas */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,156 +44,147 @@
 
         .login-box {
             background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 150, 255, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.3);
             text-align: center;
             backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
         }
 
         input[type="password"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #00f2ff;
             outline: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00f2ff;
             margin-bottom: 20px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .btn-enter {
-            padding: 10px 30px;
-            background: #0066ff;
-            color: white;
+            padding: 12px 40px;
+            background: #00f2ff;
+            color: #000;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             text-transform: uppercase;
-            box-shadow: 0 0 15px #0066ff;
+            box-shadow: 0 0 15px #00f2ff;
         }
 
-        /* --- PERFIL --- */
+        /* --- PERFIL PRINCIPAL --- */
         #main-profile {
             display: none;
             opacity: 0;
-            transition: opacity 2s ease;
+            z-index: 50;
             position: relative;
             height: 100vh;
             padding: 40px;
             box-sizing: border-box;
-        }
-
-        #star-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
+            transition: opacity 1.5s ease;
         }
 
         .container {
             display: flex;
-            gap: 40px;
-            align-items: flex-start;
+            gap: 50px;
         }
 
-        /* Sidebar Esquerda */
         .sidebar {
-            width: 300px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 255, 255, 0.4);
-            border-radius: 20px;
-            padding: 20px;
+            width: 320px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(0, 242, 255, 0.4);
+            border-radius: 25px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .profile-pic {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 3px solid #00f2ff;
-            box-shadow: 0 0 20px #00f2ff;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            border: 2px solid #00f2ff;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
             object-fit: cover;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-
-        h2 { font-size: 1.5rem; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
 
         .menu-btn {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
+            margin: 8px 0;
             background: transparent;
             border: 1px solid #00f2ff;
             color: #00f2ff;
             cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
+            border-radius: 8px;
             font-family: 'Orbitron', sans-serif;
         }
 
-        .menu-btn:hover {
-            background: #00f2ff;
-            color: #000;
-            box-shadow: 0 0 20px #00f2ff;
-        }
-
-        /* Listas Ocultas */
         .hidden-content {
             display: none;
-            margin-top: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 5px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.9rem;
+            background: rgba(0, 242, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: left;
         }
 
-        /* Contador */
+        .galeria-preview img {
+            width: 45%;
+            margin: 2%;
+            border-radius: 5px;
+            border: 1px solid #00f2ff;
+        }
+
         .counter-box {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            font-size: 0.8rem;
+            right: 30px;
             color: #00f2ff;
+            font-size: 0.8rem;
         }
     </style>
 </head>
-<body>
+<body onload="startStars()">
+
+    <canvas id="star-canvas"></canvas>
 
     <div id="login-screen">
         <div class="login-box">
-            <h3>SISTEMA DE ACESSO</h3>
-            <input type="password" id="passInput" placeholder="Senha">
+            <h2 style="color: #00f2ff; margin-bottom: 20px;">LOGIN</h2>
+            <input type="password" id="passInput" placeholder="SENHA">
             <br>
-            <button class="btn-enter" onclick="checkPass()">ENTRE</button>
+            <button class="btn-enter" onclick="checkPass()">Entrar</button>
         </div>
     </div>
 
-    <canvas id="star-canvas"></canvas>
-    
     <div id="main-profile">
         <div class="container">
             <div class="sidebar">
-                <img src="https://via.placeholder.com/180" class="profile-pic" alt="Perfil">
-                <h2>Gabriel Leandro</h2>
+                <img src="https://i.imgur.com/5UmrWFt.png" class="profile-pic">
+                <h2 style="text-shadow: 0 0 10px #00f2ff;">Gabriel Leandro</h2>
                 
                 <button class="menu-btn" onclick="toggleElement('amigos-list')">AMIGOS</button>
                 <div id="amigos-list" class="hidden-content">
-                    • Alpha<br>• Nova<br>• Orion<br>• Shadow<br>• Luna
+                    • Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando
                 </div>
 
                 <button class="menu-btn" onclick="toggleElement('fotos-box')">FOTOS</button>
                 <div id="fotos-box" class="hidden-content">
-                    Galeria Privada (Em breve)
+                    <div class="galeria-preview">
+                        <img src="https://i.imgur.com/5UmrWFt.png">
+                        <img src="https://i.imgur.com/5UmrWFt.png">
+                    </div>
                 </div>
 
-                <div style="margin-top: 20px;">
-                    <audio id="bgMusic" controls style="width: 100%; height: 30px;">
-                        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
+                <div style="margin-top:20px;">
+                    <audio id="bgMusic" controls loop>
+                        <source src="https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" type="audio/mpeg">
                     </audio>
                 </div>
             </div>
@@ -194,41 +196,7 @@
     </div>
 
     <script>
-        // Sistema de Senha
-        function checkPass() {
-            const pass = document.getElementById('passInput').value;
-            if (pass === "1009") {
-                document.getElementById('login-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('main-profile').style.display = 'block';
-                    setTimeout(() => {
-                        document.getElementById('main-profile').style.opacity = '1';
-                        document.getElementById('bgMusic').play(); // Toca música ao entrar
-                    }, 50);
-                }, 1000);
-                startStars();
-                initCounter();
-            } else {
-                alert("Senha Incorreta!");
-            }
-        }
-
-        // Mostrar/Esconder listas
-        function toggleElement(id) {
-            const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-        }
-
-        // Contador Simples (Persistente no Navegador)
-        function initCounter() {
-            let visits = localStorage.getItem('visitCounter') || 0;
-            visits++;
-            localStorage.setItem('visitCounter', visits);
-            document.getElementById('visitCount').innerText = visits;
-        }
-
-        // Efeito de Estrelas (Espaço)
+        // Iniciar Estrelas
         function startStars() {
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
@@ -236,29 +204,68 @@
             canvas.height = window.innerHeight;
 
             const stars = [];
-            for(let i = 0; i < 200; i++) {
+            for(let i = 0; i < 300; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
                     size: Math.random() * 2,
-                    speed: Math.random() * 0.5
+                    speed: Math.random() * 0.5 + 0.1
                 });
             }
 
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#fff';
+                ctx.fillStyle = "#fff";
                 stars.forEach(s => {
                     ctx.beginPath();
                     ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
                     ctx.fill();
-                    s.y += s.speed;
-                    if(s.y > canvas.height) s.y = 0;
+                    s.y -= s.speed;
+                    if(s.y < 0) s.y = canvas.height;
                 });
                 requestAnimationFrame(animate);
             }
             animate();
         }
+
+        // Sistema de Senha
+        function checkPass() {
+            const pass = document.getElementById('passInput').value;
+            const audio = document.getElementById('bgMusic');
+
+            if (pass === "1009") {
+                document.getElementById('login-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('main-profile').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('main-profile').style.opacity = '1';
+                        audio.play();
+                    }, 50);
+                }, 1000);
+                initCounter();
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function initCounter() {
+            let visits = localStorage.getItem('wrs_v') || 0;
+            visits++;
+            localStorage.setItem('wrs_v', visits);
+            document.getElementById('visitCount').innerText = visits;
+        }
+
+        window.onresize = () => {
+            const canvas = document.getElementById('star-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
     </script>
 </body>
 </html>
