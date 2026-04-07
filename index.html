@@ -1,111 +1,31 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Gabr</title>
-    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Roboto:ital,wght@1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* [CITAÇÃO: 91-115] Estilos principais da galeria e botões */
-        html, body {
-            margin: 0; padding: 0;
-            background: url('https://xatimg.com/image/y7Zi7XEbdkZc.jpg') no-repeat center center fixed !important;
-            background-color: #000000 !important;
-            background-size: cover !important;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
+<button class="btn-style" onclick="toggleView('gifs')">Gifs</button>
 
-        .profile-container {
-            width: 95%; max-width: 900px; margin: 50px auto; padding: 20px;
-            background-color: rgba(15, 15, 15, 0.85); border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8); position: relative;
-            display: flex; flex-direction: column; min-height: calc(100vh - 100px);
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-style {
-            display: inline-block; padding: 12px 25px; text-decoration: none;
-            color: #fff; background-color: #7e8081; border: none;
-            border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .btn-style:hover { background-color: #959595; transform: scale(1.05); }
-
-        /* [CITAÇÃO: 117-121] Estilos específicos para a visualização de GIFs */
-        #view-gifs { display: none; animation: fadeIn 0.5s; margin-top: 20px; width: 100%; }
+<div id="view-gifs" style="display: none;">
+    <div class="gifs-header">
+        <h2 style="color:#fff; margin:0;">Galeria de Gifs</h2>
         
-        .gifs-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border-bottom: 1px solid #7e8081; padding-bottom: 10px;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-
-<div class="profile-container">
-    <div class="profile-details">
-        <h1 class="main-title"> ✎ 𝗚𝗮𝗯𝗿 ✎ </h1>
-        <div class="profile-buttons">
-            <button class="btn-style" onclick="toggleView('gifs')">Gifs</button>
-            <a class="btn-style" href="https://imgur.com/a/RpqRnbi" target="_blank">Pcback Gif</a>
-            <a class="btn-style" href="https://imgur.com/a/2z9TwHg" target="_blank">Pstyle Gif</a>
-        </div>
+        <button class="btn-style" onclick="toggleView('profile')" style="background-color:#555;">
+            <i class="fas fa-arrow-left"></i> Voltar para a Página
+        </button>
     </div>
 
-    <div id="view-profile">
-        <div class="info-cards">
-            <div class="info-card">
-                <h3>Sobre mim</h3>
-                <p>Vendo Gifs, Pcback, Pstyle e Fundos para XAT.</p>
-            </div>
+    <div id="gifs-galleries-container">
+        <img src="https://xatimg.com/image/L9ydAN6TqTsS.gif" style="width:200px; margin:5px;">
+        <img src="https://xatimg.com/image/L9ydAN6TqTsS.gif" style="width:200px; margin:5px;">
         </div>
-    </div>
-
-    <div id="view-gifs">
-        <div class="gifs-header">
-            <h2 style="color:#fff; margin:0;">Galeria de Gifs</h2>
-            <button class="btn-style" onclick="toggleView('profile')" style="background-color:#555;">
-                <i class="fas fa-arrow-left"></i> Voltar para a Página
-            </button>
-        </div>
-
-        <div id="gifs-galleries-container">
-            <table border="0">
-                <tbody>
-                    <tr>
-                        <td><img src="LINK_DA_SUA_GIF_AQUI_1.gif" width="200"></td>
-                        <td><img src="LINK_DA_SUA_GIF_AQUI_2.gif" width="200"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
 
 <script>
-    // [CITAÇÃO: 117-119] Função para alternar entre perfil e galeria de gifs
-    function toggleView(viewName) {
-        const profileView = document.getElementById('view-profile');
-        const gifsView = document.getElementById('view-gifs');
+function toggleView(viewName) {
+    const profileView = document.getElementById('view-profile'); // ID da sua página principal
+    const gifsView = document.getElementById('view-gifs');
 
-        if (viewName === 'gifs') {
-            profileView.style.display = 'none';
-            gifsView.style.display = 'block';
-        } else {
-            profileView.style.display = 'block';
-            gifsView.style.display = 'none';
-        }
+    if (viewName === 'gifs') {
+        if(profileView) profileView.style.display = 'none';
+        gifsView.style.display = 'block';
+    } else {
+        if(profileView) profileView.style.display = 'block';
+        gifsView.style.display = 'none';
     }
+}
 </script>
-
-</body>
-</html>
