@@ -1,372 +1,293 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface Premium</title>
+<title>Galeria Netflix Style PRO</title>
+
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #050505;
+  font-family: Arial;
+  background: #0f0f0f;
   color: white;
-  overflow: hidden;
+  display: flex;
 }
 
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-/* SIDEBAR */
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 260px;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(10px);
+/* MENU */
+.menu {
+  width: 240px;
+  background: #141414;
+  height: 100vh;
   padding: 20px;
   box-sizing: border-box;
 }
 
+/* PERFIL */
 .profile {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .profile img {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  border: 2px solid #00ffff;
+  border: 2px solid #e50914;
+  margin-bottom: 10px;
 }
 
-.gradient-text {
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
+.profile h3 {
+  margin: 5px 0;
+}
+
+.profile p {
+  font-size: 12px;
+  color: #aaa;
 }
 
 /* BOTÕES */
-.menu-btn {
-  margin-top: 20px;
-  padding: 12px;
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  color: black;
-  border: none;
+.menu button {
   width: 100%;
-  border-radius: 20px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #222;
+  border: none;
+  color: white;
   cursor: pointer;
-  font-weight: bold;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.3s;
+  border-radius: 5px;
+  transition: 0.3s;
 }
 
-.menu-btn .icon {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
-  border: 2px solid black;
-  border-radius: 50%;
-  border-left: 4px solid black;
-  animation: spin 1s linear infinite;
+.menu button:hover {
+  background: #e50914;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
-}
-
-.menu-btn:hover {
-  box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff inset;
-}
-
-/* PAINÉIS */
-.panel {
-  position: fixed;
-  right: -100%;
-  top: 0;
-  width: calc(100% - 260px);
-  height: 100%;
-  background: rgba(10,10,10,0.95);
-  padding: 30px;
-  box-sizing: border-box;
-  transition: right 0.5s;
-  overflow-y: auto;
-  z-index: 1;
-}
-
-.panel.active {
-  right: 0;
+/* CONTEÚDO */
+.content {
+  flex: 1;
+  padding: 20px;
 }
 
 /* GRID */
 .grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 276px);
   gap: 15px;
-  counter-reset: card;
 }
 
+/* CARD */
 .card {
+  width: 276px;
+  height: 232px;
   position: relative;
-  width: 260px;
-  height: 218px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 15px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  border: 1px solid rgba(0,255,255,0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
   overflow: hidden;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.card::before {
-  counter-increment: card;
-  content: "#" counter(card);
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 14px;
-  color: #00ffff;
-  font-weight: bold;
-  background: rgba(0,255,255,0.1);
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
-.card:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 25px rgba(0,255,255,0.4);
-}
-
+/* IMAGEM */
 .card img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  transition: 0.4s;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
+
+/* NUMERO */
+.card span {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  background: rgba(0,0,0,0.7);
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* PLACEHOLDER */
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: #1c1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 22px;
 }
 
 /* MODAL */
-#modal {
-  display: none;
+.modal {
   position: fixed;
-  z-index: 9999;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0);
+  display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
 }
 
-#modal img {
-  width: 1088px;
-  height: 661px;
-  border-radius: 10px;
+.modal.active {
+  opacity: 1;
+  pointer-events: all;
+  background: rgba(0,0,0,0.95);
+}
+
+.modal img {
+  width: 1202px;
+  height: 733px;
   object-fit: cover;
+  border-radius: 10px;
+  transform: scale(0.7);
+  opacity: 0;
+  transition: 0.4s;
 }
 
-#modal .close-btn {
+.modal.active img {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* FECHAR */
+.close {
   position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 28px;
-  color: white;
+  top: 30px;
+  right: 40px;
+  font-size: 30px;
   cursor: pointer;
-  font-weight: bold;
+  opacity: 0;
 }
 
-/* RODAPÉ */
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 260px;
-  width: calc(100% - 260px);
-  text-align: center;
-  padding: 10px 0;
-  background: rgba(0,0,0,0.6);
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-footer a {
-  color: #00ffff;
-  text-decoration: none;
+.modal.active .close {
+  opacity: 1;
 }
 </style>
 </head>
+
 <body>
 
-<canvas id="canvas"></canvas>
+<div class="menu">
 
-<div class="sidebar">
+  <!-- PERFIL -->
   <div class="profile">
-    <img src="https://i.pravatar.cc/150" alt="Foto de Perfil">
-    <h2 class="gradient-text">iiCarvaozim</h2>
-    <p class="gradient-text">Dev • Criador • Designer</p>
+    <img src="https://i.imgur.com/2DhmtJ4.png">
+    <h3>iiCarvaozim</h3>
+    <p>/Design/ 2026</p>
   </div>
 
-  <button class="menu-btn" onclick="openGFS(); playSound();">
-    <div class="icon" aria-hidden="true"></div> FUNDOS GFS
-  </button>
+  <!-- BOTÕES -->
+  <button onclick="trocarPagina('fundos')">Galerias de Fundos</button>
+  <button onclick="trocarPagina('pcback')">PCBACK</button>
+  <button onclick="trocarPagina('perfils')">Perfils</button>
 
-  <button class="menu-btn" onclick="pcBack();">
-    <div class="icon" aria-hidden="true"></div> PCBACK
-  </button>
-
-  <button class="menu-btn" onclick="openStatic();">
-    <div class="icon" aria-hidden="true"></div> FUNDOS ESTÁTICOS
-  </button>
 </div>
 
-<!-- PAINEL FUNDOS GFS -->
-<div class="panel" id="panelGFS">
-  <div class="grid">
-    <div class="card" id="cardGFS1"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-  </div>
-</div>
-
-<!-- PAINEL FUNDOS ESTÁTICOS -->
-<div class="panel" id="panelStatic">
-  <div class="grid">
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-  </div>
+<div class="content">
+  <h2 id="titulo">Galeria</h2>
+  <div class="grid" id="grid"></div>
 </div>
 
 <!-- MODAL -->
-<div id="modal">
-  <span class="close-btn" onclick="closeModal()">×</span>
-  <img id="modalImg" src="">
+<div class="modal" id="modal">
+  <span class="close" onclick="fechar()">✖</span>
+  <img id="imgModal">
 </div>
 
-<!-- RODAPÉ LINKADO -->
-<footer>
-  <a href="https://xat.com/conexaosertanejoo" target="_blank">
-    Copyright @ - 2026 // Reservado iCarvãozim / Fundos / Pcback / Perfil
-  </a>
-</footer>
-
 <script>
-// SOM
-function playSound() {
-  const audio = new Audio("https://freesound.org/data/previews/341/341695_6245054-lq.mp3");
-  audio.volume = 0.3;
-  audio.play();
+
+/* PÁGINAS */
+const paginas = {
+
+  fundos: [
+    "https://xatimg.com/image/LhPTjinBD63k.png",
+    "https://xatimg.com/image/jEluPHc8kDBS.png",
+    "https://xatimg.com/image/M5KeuOtU2NpC.png",
+    "https://xatimg.com/image/4jN5TkdSc7x2.png",
+    "https://xatimg.com/image/lVL1GmAicIdb.png"
+  ],
+
+  pcback: [
+    "https://xatimg.com/image/jZxk3vbSyvkO.png",
+    "https://xatimg.com/image/eNTr7eK5Fzkx.png",
+    "https://xatimg.com/image/BMqpZZpgVYRg.png",
+    "https://xatimg.com/image/OcDf7xQbS78A.png",
+    "https://xatimg.com/image/7XZ05yVGKxLh.png",
+    "https://xatimg.com/image/z77euV46c21d.png",
+    "https://xatimg.com/image/BduAWc9oW2KY.png",
+    "https://xatimg.com/image/wXVGtiwFvtph.png",
+    "https://xatimg.com/image/vQZ9oxOZgWDE.png",
+    "https://xatimg.com/image/smWJYWh2EbF8.png",
+    "https://xatimg.com/image/LHprk6E47qv3.png",
+    "https://xatimg.com/image/4N14WUti23Wp.png",
+    "https://xatimg.com/image/LySTKBuJfezZ.png",
+    "https://xatimg.com/image/yXRojPIaB9rG.jpg",
+    "https://xatimg.com/image/vFE2aJvDe9ET.png",
+    "https://xatimg.com/image/DJcTgtIiVIKH.jpg",
+    "https://xatimg.com/image/PisrchM5XiB4.png",
+    "https://xatimg.com/image/8mRaFlDxF33B.png",
+    "https://xatimg.com/image/RY0binDJKasq.png"
+  ],
+
+  perfils: new Array(6).fill(null)
+};
+
+/* TROCAR PÁGINA */
+function trocarPagina(nome){
+  const grid = document.getElementById("grid");
+  const titulo = document.getElementById("titulo");
+
+  grid.innerHTML = "";
+  titulo.innerText = nome.toUpperCase();
+
+  paginas[nome].forEach((img, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    if(img){
+      card.innerHTML = `
+        <span>${i + 1}</span>
+        <img src="${img}" onclick="abrir('${img}')">
+      `;
+    } else {
+      card.innerHTML = `
+        <span>${i + 1}</span>
+        <div class="placeholder">CARD</div>
+      `;
+    }
+
+    grid.appendChild(card);
+  });
 }
 
-// PCBACK
-function pcBack() {
-  document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("panelStatic").classList.remove("active");
+/* MODAL */
+function abrir(src){
+  document.getElementById("imgModal").src = src;
+  document.getElementById("modal").classList.add("active");
 }
 
-// FUNDOS GFS
-function openGFS() {
-  document.getElementById("panelGFS").classList.add("active");
-  document.getElementById("panelStatic").classList.remove("active");
-
-  const card = document.getElementById("cardGFS1");
-  card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif" alt="GIF Fundos">';
-  
-  card.onclick = function() {
-    openModal("https://xatimg.com/image/2z709uX4q7li.gif");
-  };
+function fechar(){
+  document.getElementById("modal").classList.remove("active");
 }
 
-// FUNDOS ESTÁTICOS
-function openStatic() {
-  document.getElementById("panelStatic").classList.add("active");
-  document.getElementById("panelGFS").classList.remove("active");
-  resetParticlesStatic();
-}
-
-// MODAL
-function openModal(src) {
-  document.getElementById("modal").style.display = "flex";
-  document.getElementById("modalImg").src = src;
-}
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-}
-
-// CANVAS
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-let particles = [];
-
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 1;
-    this.speedX = Math.random() - 0.5;
-    this.speedY = Math.random() - 0.5;
+/* FECHAR FORA */
+document.getElementById("modal").addEventListener("click", function(e){
+  if(e.target.id === "modal"){
+    fechar();
   }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x > canvas.width) this.x = 0;
-    if (this.x < 0) this.x = canvas.width;
-    if (this.y > canvas.height) this.y = 0;
-    if (this.y < 0) this.y = canvas.height;
-  }
-  draw() {
-    ctx.fillStyle = "#00ffff";
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-    ctx.fill();
-  }
-}
+});
 
-function initParticles(count = 100) {
-  particles = [];
-  for (let i = 0; i < count; i++) particles.push(new Particle());
-}
+/* INICIAR */
+trocarPagina('fundos');
 
-function resetParticlesStatic(count = 100) {
-  particles = [];
-  for (let i = 0; i < count; i++) {
-    let p = new Particle();
-    p.speedX = 0;
-    p.speedY = 0;
-    particles.push(p);
-  }
-}
-
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
 </script>
 
 </body>
