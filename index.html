@@ -14,8 +14,6 @@
         }
 
         #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        
-        /* AJUSTE: Cursor agora com o maior Z-index para sobrepor a foto ampliada */
         #cursor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20000; }
 
         /* --- TELA DE ENTRADA --- */
@@ -36,21 +34,36 @@
             margin-bottom: 20px; text-align: center; font-size: 1.1rem;
         }
 
+        /* AJUSTE NO BOTÃO ENTRAR: Removido scale do loop para evitar bug no texto */
         .btn-enter {
             padding: 12px 40px; background: #00f2ff; color: #000;
             border: none; border-radius: 8px; cursor: pointer;
-            font-weight: bold; text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700; text-transform: uppercase;
             box-shadow: 0 0 20px #00f2ff;
             animation: neonPulse 1.5s infinite alternate;
             transition: 0.3s;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         @keyframes neonPulse {
-            from { box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff; transform: scale(1); }
-            to { box-shadow: 0 0 30px #00f2ff, 0 0 50px #00f2ff; transform: scale(1.05); background: #fff; }
+            from { 
+                box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
+                filter: brightness(1);
+            }
+            to { 
+                box-shadow: 0 0 30px #00f2ff, 0 0 50px #00f2ff; 
+                filter: brightness(1.4);
+            }
         }
 
-        .btn-enter:hover { animation: none; background: #fff; box-shadow: 0 0 60px #00f2ff; transform: scale(1.1); }
+        .btn-enter:hover { 
+            animation: none; 
+            background: #fff; 
+            box-shadow: 0 0 60px #00f2ff; 
+            transform: scale(1.05); /* Scale apenas no hover para estabilidade */
+        }
 
         /* --- LAYOUT PRINCIPAL --- */
         #main-profile {
