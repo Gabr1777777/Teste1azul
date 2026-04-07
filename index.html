@@ -15,7 +15,34 @@
             cursor: default;
         }
 
-        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        /* --- NOVO: EFEITO DE LUZES PASSANDO --- */
+        body::before {
+            content: ""; position: fixed; top: -100%; left: -100%; width: 300%; height: 300%;
+            background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.05) 50%, transparent 55%);
+            animation: lightSweep 8s linear infinite; pointer-events: none; z-index: 2;
+        }
+
+        @keyframes lightSweep {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(0%, 0%) rotate(360deg); }
+        }
+
+        /* Luzes piscando no fundo */
+        .ambient-light {
+            position: fixed; width: 100%; height: 100%; top: 0; left: 0;
+            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, transparent 70%);
+            opacity: 0; pointer-events: none; z-index: 1;
+            animation: ambientFlash 10s ease-in-out infinite;
+        }
+
+        @keyframes ambientFlash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.05; }
+            52% { opacity: 0.1; }
+            54% { opacity: 0.05; }
+        }
+
+        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
 
         /* --- TELA DE ENTRADA --- */
         #login-screen {
@@ -28,6 +55,7 @@
             background: rgba(10, 10, 20, 0.85); padding: 40px; border-radius: 20px;
             border: 2px solid var(--main-color); text-align: center;
             backdrop-filter: blur(15px); box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+            z-index: 101;
         }
         input[type="password"] {
             padding: 12px; border-radius: 8px; border: 1px solid var(--main-color);
@@ -122,6 +150,7 @@
 </head>
 <body onload="init()">
 
+    <div class="ambient-light"></div>
     <canvas id="star-canvas"></canvas>
 
     <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:15000; justify-content:center; align-items:center;">
@@ -209,7 +238,6 @@
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
         }
 
-        // --- EFEITO DE ESTRELAS BRILHANTES E PISCANTES ---
         function startStars() {
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
@@ -219,7 +247,7 @@
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 4 + 1, // Estrelas maiores
+                    size: Math.random() * 4 + 1,
                     opacity: Math.random(),
                     speed: Math.random() * 0.05 + 0.01,
                     twinkle: Math.random() * 0.05
@@ -231,7 +259,6 @@
                 gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
                 gradient.addColorStop(0.2, `rgba(255, 255, 255, ${opacity * 0.8})`);
                 gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                
                 ctx.fillStyle = gradient;
                 ctx.beginPath();
                 ctx.arc(x, y, radius, 0, Math.PI * 2);
@@ -243,10 +270,7 @@
                 stars.forEach(s => {
                     s.opacity += s.twinkle;
                     if(s.opacity > 1 || s.opacity < 0.1) s.twinkle = -s.twinkle;
-                    
-                    // Desenha o brilho da estrela
                     drawStar(s.x, s.y, s.size * (0.8 + s.opacity * 0.5), s.opacity);
-                    
                     s.y -= s.speed;
                     if(s.y < 0) s.y = canvas.height;
                 });
@@ -255,7 +279,6 @@
             anim();
         }
 
-        // Funções de controle permanecem iguais...
         function setupSlider() {
             const wrap = document.getElementById('slide-wrap');
             fotosGaleria.forEach(src => { const img = document.createElement('img'); img.src = src; img.className = 'slide-img'; wrap.appendChild(img); });
