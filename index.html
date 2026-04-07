@@ -35,7 +35,6 @@
             margin-bottom: 20px; text-align: center; font-size: 1.1rem;
         }
 
-        /* Botão Entrar Pulsante (Inalterado) */
         .btn-enter {
             padding: 12px 40px; background: #00f2ff; color: #000;
             border: none; border-radius: 8px; cursor: pointer;
@@ -71,7 +70,6 @@
             object-fit: cover; margin-bottom: 20px;
         }
 
-        /* DEFINIÇÃO DO EFEITO GRADIENTE ANIMADO */
         .animated-gradient-text {
             background: linear-gradient(to right, #00f2ff, #ffffff, #00f2ff);
             background-size: 200% auto;
@@ -79,8 +77,8 @@
             -webkit-background-clip: text;
             background-clip: text;
             animation: gradientShift 3s linear infinite;
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); /* Mantém um leve brilho azul */
-            display: inline-block; /* Necessário para o gradient funcionar em alguns elementos */
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+            display: inline-block;
         }
 
         @keyframes gradientShift {
@@ -117,6 +115,14 @@
             border: 1px solid rgba(0, 242, 255, 0.4); border-radius: 25px;
             padding: 30px; display: none; overflow-y: auto;
             backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
+        }
+
+        /* Container para forçar o botão a ficar em cima */
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
         .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
@@ -178,8 +184,10 @@
         <div style="flex: 1;"></div>
 
         <div id="content-right">
-            <button class="btn-enter" style="margin-bottom:20px; padding:8px 15px; animation: none;" onclick="closeRight()">← VOLTAR</button>
-            <h2 id="right-title" style="border-bottom: 1px solid #00f2ff33; padding-bottom: 10px; margin-top: 0;"></h2>
+            <div class="header-right">
+                <button class="btn-enter" style="padding:8px 15px; animation: none;" onclick="closeRight()">← VOLTAR</button>
+                <h2 id="right-title" style="border-bottom: 1px solid #00f2ff33; padding-bottom: 10px; width: 100%; margin-top: 20px;"></h2>
+            </div>
             <div id="right-body"></div>
         </div>
     </div>
@@ -244,8 +252,6 @@
             const rightTitle = document.getElementById('right-title');
             const body = document.getElementById('right-body');
             document.getElementById('content-right').style.display = "block";
-            
-            // Adiciona a classe de gradiente ao título e remove a cor azul fixa
             rightTitle.className = "animated-gradient-text";
             rightTitle.style.color = ""; 
 
@@ -253,7 +259,6 @@
                 rightTitle.innerText = "SOBRE MIM";
                 body.innerHTML = `<div style="color:#00f2ff; line-height:1.8;">Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>Married Mnna (1013) ❤️</div>`;
             } else if(mode === 'fotos') {
-                // APLICADO: TÍTULO MINHAS FOTOS
                 rightTitle.innerText = "MINHAS FOTOS";
                 body.innerHTML = `<div class="galeria-grid">
                     <img src="https://i.imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)">
@@ -265,7 +270,6 @@
                     <img src="https://i.imgur.com/pTlq477.png" onclick="zoom(this.src)">
                 </div>`;
             } else {
-                // APLICADO: TÍTULO LISTA DE AMIGOS
                 rightTitle.innerText = "LISTA DE AMIGOS";
                 body.innerHTML = `<div style="color:#00f2ff;">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
             }
