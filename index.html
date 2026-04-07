@@ -331,18 +331,53 @@
             } anim();
         }
 
+        // --- EFEITO PROFISSIONAL DE CURSOR ---
         function startCursorEffect() {
             const canvas = document.getElementById('cursor-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            window.onmousemove = e => { mouse.x = e.clientX; mouse.y = e.clientY; };
+            
+            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
             function anim() {
                 ctx.clearRect(0,0,canvas.width,canvas.height);
-                if(mouse.x > 0) particles.push({ x:mouse.x, y:mouse.y, size:Math.random()*3+1, spdX:(Math.random()-0.5)*2, spdY:(Math.random()-0.5)*2, alpha:1 });
+                
+                // Cria nova partícula apenas se o mouse estiver na tela
+                if(mouse.x > 0) {
+                    particles.push({ 
+                        x: mouse.x, 
+                        y: mouse.y, 
+                        size: Math.random() * 5 + 2, 
+                        spdX: (Math.random() - 0.5) * 1.5, 
+                        spdY: (Math.random() - 0.5) * 1.5, 
+                        alpha: 1,
+                        color: `0, 242, 255` 
+                    });
+                }
+
                 for(let i=0; i<particles.length; i++){
-                    let p = particles[i]; p.x+=p.spdX; p.y+=p.spdY; p.alpha-=0.02;
-                    if(p.alpha<=0) { particles.splice(i,1); i--; continue; }
-                    ctx.fillStyle=`rgba(0, 242, 255, ${p.alpha})`; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill();
+                    let p = particles[i];
+                    p.x += p.spdX;
+                    p.y += p.spdY;
+                    p.alpha -= 0.015; // Desaparecimento suave
+                    p.size *= 0.96;   // Encolhimento suave
+
+                    if(p.alpha <= 0 || p.size < 0.5) { 
+                        particles.splice(i, 1); 
+                        i--; 
+                        continue; 
+                    }
+
+                    // Desenho com brilho (glow)
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = `rgb(${p.color})`;
+                    ctx.fillStyle = `rgb(${p.color})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
                 }
                 requestAnimationFrame(anim);
             } anim();
@@ -368,6 +403,13 @@
             audio.src = document.getElementById('playlist').value;
             audio.play();
         }
+
+        window.onresize = () => {
+            const sc = document.getElementById('star-canvas');
+            const cc = document.getElementById('cursor-canvas');
+            sc.width = window.innerWidth; sc.height = window.innerHeight;
+            cc.width = window.innerWidth; cc.height = window.innerHeight;
+        };
     </script>
 </body>
 </html>
