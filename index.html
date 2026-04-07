@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>XatSpace - Gabriel Leandro</title>
+    <title>WRS Galeria - Gabriel Leandro</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
 
@@ -12,11 +12,10 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background-color: #000;
             font-family: 'Orbitron', sans-serif; color: #fff;
-            cursor: default;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* --- MENSAGEM DE COPYRIGHT ATUALIZADA --- */
+        /* --- COPYRIGHT ALERT --- */
         #copyright-alert {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.95); border: 2px solid var(--main-color);
@@ -27,24 +26,23 @@
             pointer-events: none; backdrop-filter: blur(10px);
         }
 
-        /* --- ESTILOS ORIGINAIS --- */
+        /* --- BACKGROUND & EFFECTS --- */
         .light-effect-layer {
             position: fixed; top: -150%; left: -150%; width: 400%; height: 400%;
             background: linear-gradient(135deg, transparent 42%, var(--main-color) 49%, #ffffff 50%, var(--main-color) 51%, transparent 58%);
             animation: lightSweep 12s linear infinite; pointer-events: none; 
-            z-index: -1; opacity: 0.4; filter: blur(60px);
+            z-index: -1; opacity: 0.3; filter: blur(60px);
         }
-
         @keyframes lightSweep {
             0% { transform: translate(-20%, -20%) rotate(0deg); }
             100% { transform: translate(10%, 10%) rotate(360deg); }
         }
-
         #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
+        /* --- LOGIN --- */
         #login-screen {
             position: fixed; z-index: 1000; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9); display: flex;
+            background: rgba(0, 0, 0, 0.95); display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 1s ease;
         }
@@ -59,20 +57,12 @@
             margin-bottom: 20px; text-align: center; font-size: 1.1rem;
         }
 
-        .btn-enter {
-            padding: 12px 40px; background: var(--main-color); color: #000;
-            border: none; border-radius: 8px; cursor: pointer;
-            font-family: 'Orbitron', sans-serif; font-weight: 700; text-transform: uppercase;
-            box-shadow: 0 0 20px var(--main-color);
-            animation: neonPulse 1.5s infinite alternate; transition: 0.3s;
-        }
-
+        /* --- LAYOUT --- */
         #main-profile {
             display: none; opacity: 0; z-index: 50; position: relative;
             display: flex; height: 100vh; padding: 40px; box-sizing: border-box;
             gap: 40px; transition: opacity 1.5s;
         }
-
         .sidebar {
             width: 320px; background: rgba(0, 0, 0, 0.85);
             border: 1px solid var(--main-color); border-radius: 25px;
@@ -94,10 +84,13 @@
             border: 2px solid var(--main-color); color: var(--main-color); cursor: pointer;
             border-radius: 10px; font-family: 'Orbitron', sans-serif; transition: 0.3s;
         }
+        .menu-btn:hover { background: rgba(0, 242, 255, 0.1); transform: scale(1.05); }
 
+        /* --- PLAYER --- */
         .player-card { margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px; border-radius: 15px; border: 1px solid var(--main-color); }
-        .progress-bar { width: 0%; height: 100%; background: var(--main-color); box-shadow: 0 0 8px var(--main-color); }
+        .progress-bar { width: 0%; height: 100%; background: var(--main-color); box-shadow: 0 0 8px var(--main-color); transition: width 0.1s linear; }
 
+        /* --- SLIDER & CONTENT --- */
         .slider-container { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         .slideshow { width: 100%; height: 400px; position: relative; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slide-img { position: absolute; width: 280px; height: 380px; object-fit: cover; border-radius: 15px; border: 2px solid var(--main-color); transition: all 0.8s ease; opacity: 0; }
@@ -111,8 +104,8 @@
             position: absolute; right: 40px; top: 40px; bottom: 40px; left: 400px; z-index: 60;
         }
 
-        #ui-tools { position: fixed; bottom: 20px; right: 20px; z-index: 10001; display: none; gap: 10px; align-items: flex-end; }
-        #visit-counter { background: rgba(0, 0, 0, 0.9); border: 1px solid var(--main-color); padding: 6px 12px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; }
+        #ui-tools { position: fixed; bottom: 20px; right: 20px; z-index: 10001; display: none; gap: 10px; }
+        #visit-counter { background: rgba(0, 0, 0, 0.9); border: 1px solid var(--main-color); padding: 6px 12px; border-radius: 4px; text-align: center; }
     </style>
 </head>
 <body onload="init()">
@@ -123,17 +116,16 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2 style="color: var(--main-color);">LOGIN</h2>
-            <input type="password" id="passInput" placeholder="SENHA">
+            <h2 class="animated-gradient-text">PAINEL WRS</h2>
+            <input type="password" id="passInput" placeholder="DIGITE A SENHA">
             <br>
-            <button class="btn-enter" onclick="checkPass()">Entrar</button>
+            <button class="menu-btn" style="width: auto; padding: 10px 40px;" onclick="checkPass()">ACESSAR</button>
         </div>
     </div>
 
     <div id="ui-tools">
-        <button class="btn-enter" style="padding: 8px 12px; animation: none;" onclick="changeTheme()">🎨</button>
         <div id="visit-counter">
-            <span style="color: var(--main-color); font-size: 8px;">VISITAS</span>
+            <span style="color: var(--main-color); font-size: 8px; letter-spacing: 2px;">ONLINE</span>
             <span id="count-number" style="color: #fff; font-size: 18px; font-family: monospace;">...</span>
         </div>
     </div>
@@ -143,33 +135,33 @@
             <img src="https://i.imgur.com/Ip2Bdxv.png" class="profile-pic">
             <h2 class="animated-gradient-text" style="font-size: 1.2rem;">Gabriel Leandro</h2>
             
-            <button class="menu-btn" onclick="openRight('sobre')">SOBRE MIM</button>
+            <button class="menu-btn" onclick="openRight('sobre')">PERFIL</button>
             <button class="menu-btn" onclick="openRight('amigos')">AMIGOS</button>
-            <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
+            <button class="menu-btn" onclick="openRight('fotos')">GALERIA</button>
 
             <div class="player-card">
-                <div id="trackName" style="font-size: 10px; color: var(--main-color); margin-bottom: 10px;">Carregando...</div>
+                <div id="trackName" style="font-size: 9px; color: var(--main-color); margin-bottom: 10px; text-transform: uppercase;">Música</div>
                 <div style="width:100%; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; margin-bottom:15px; cursor:pointer;" onclick="seek(event)">
                     <div class="progress-bar" id="progBar"></div>
                 </div>
                 <div style="display:flex; justify-content:space-around;">
-                    <button class="btn-enter" style="padding:5px 10px; animation:none;" onclick="prevTrack()">⏮</button>
-                    <button class="btn-enter" style="padding:5px 10px; animation:none;" id="playBtn" onclick="togglePlay()">⏸</button>
-                    <button class="btn-enter" style="padding:5px 10px; animation:none;" onclick="nextTrack()">⏭</button>
+                    <button class="menu-btn" style="padding:5px; margin:0; border:none;" onclick="prevTrack()">⏮</button>
+                    <button class="menu-btn" style="padding:5px; margin:0; border:none;" id="playBtn" onclick="togglePlay()">⏸</button>
+                    <button class="menu-btn" style="padding:5px; margin:0; border:none;" onclick="nextTrack()">⏭</button>
                 </div>
                 <audio id="bgMusic" loop ontimeupdate="updateProgress()"></audio>
             </div>
         </div>
 
         <div class="slider-container" id="center-slider">
-            <h3 class="animated-gradient-text" style="letter-spacing: 5px;">PROJETOS & DESTAQUES</h3>
+            <h3 class="animated-gradient-text" style="letter-spacing: 8px; font-size: 14px;">WRS PROJECTS</h3>
             <div class="slideshow" id="slide-wrap"></div>
         </div>
 
         <div id="content-right">
-            <button class="btn-enter" style="padding:8px 15px; animation:none;" onclick="closeRight()">← VOLTAR</button>
-            <h2 id="right-title" class="animated-gradient-text" style="margin-top: 20px;"></h2>
-            <div id="right-body"></div>
+            <button class="menu-btn" style="width:auto; padding:5px 20px;" onclick="closeRight()">VOLTAR</button>
+            <h2 id="right-title" class="animated-gradient-text" style="margin-top: 25px; border-bottom: 1px solid var(--main-color); padding-bottom: 10px;"></h2>
+            <div id="right-body" style="margin-top: 20px; line-height: 1.6;"></div>
         </div>
     </div>
 
@@ -187,7 +179,7 @@
             }
         });
 
-        // --- FUNCIONALIDADES ---
+        // --- DADOS E FUNÇÕES ---
         const ID_VISITAS = "perfil_gabriel_2026_unique";
         const fotosGaleria = ["https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", "https://i.imgur.com/pTlq477.png"];
         const playlist = [
@@ -216,14 +208,23 @@
         }
 
         function openRight(mode) {
-            document.getElementById('content-right').style.display = "block";
-            document.getElementById('center-slider').style.visibility = "hidden";
             const body = document.getElementById('right-body');
             const title = document.getElementById('right-title');
-            if(mode==='sobre') { title.innerText="SOBRE MIM"; body.innerHTML="Vendo Gifs, Pcback, Pstyle e Fundos para XAT - WRS 2026"; }
-            else if(mode==='amigos') { title.innerText="AMIGOS"; body.innerHTML="Marbella, Gold, Venon, Gothica, Mnna, Armando, Promise"; }
-            else { title.innerText="FOTOS"; body.innerHTML=fotosGaleria.map(s => `<img src="${s}" style="width:100px; margin:5px; border:1px solid var(--main-color)">`).join(''); }
+            document.getElementById('content-right').style.display = "block";
+            document.getElementById('center-slider').style.visibility = "hidden";
+            
+            if(mode==='sobre') {
+                title.innerText="PERFIL PROFISSIONAL";
+                body.innerHTML="<p><b>Nome:</b> Gabriel Leandro (WRS)</p><p><b>Especialidade:</b> Design de Gifs, Pcbacks, Pstyles e Interfaces para Xat.</p><p><b>Foco:</b> Criação de layouts exclusivos e scripts de proteção para chats e perfis.</p>";
+            } else if(mode==='amigos') {
+                title.innerText="NETWORK / AMIGOS";
+                body.innerHTML="<div style='display:grid; grid-template-columns: 1fr 1fr; gap: 10px;'><span>⭐ Marbella</span><span>⭐ Gold</span><span>⭐ Venon</span><span>⭐ Gothica</span><span>⭐ Mnna</span><span>⭐ Armando</span><span>⭐ Promise</span><span>⭐ Marbella</span></div>";
+            } else {
+                title.innerText="GALERIA DE PROJETOS";
+                body.innerHTML = "<div style='display:flex; flex-wrap:wrap; gap:10px;'>" + fotosGaleria.map(s => `<img src="${s}" style="width:120px; height:150px; object-fit:cover; border:1px solid var(--main-color); border-radius:8px;">`).join('') + "</div>";
+            }
         }
+
         function closeRight() { document.getElementById('content-right').style.display='none'; document.getElementById('center-slider').style.visibility="visible"; }
 
         function init() { 
@@ -245,7 +246,7 @@
                     idx = (idx+1)%slides.length;
                 }
             }
-            update(); setInterval(update, 3000);
+            update(); setInterval(update, 4000);
         }
 
         function togglePlay() { audio.paused ? (audio.play(), document.getElementById('playBtn').innerText="⏸") : (audio.pause(), document.getElementById('playBtn').innerText="▶"); }
