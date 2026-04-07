@@ -102,7 +102,7 @@
             border: 1px solid #00f2ff;
             padding: 6px 12px;
             border-radius: 4px;
-            display: none; /* Inicia oculto e aparece após login */
+            display: none;
             flex-direction: column;
             align-items: center;
         }
@@ -213,7 +213,9 @@
     </div>
 
     <script>
-        const ID_VISITAS = "galeria_wrs_2026_main"; 
+        // CHAVE ÚNICA PARA ESTE PERFIL (Não mistura com a Galeria)
+        const ID_VISITAS = "perfil_gabriel_2026_unique"; 
+        
         let stars = [], mouse = { x: 0, y: 0 };
         const dots = [];
         const fotosGaleria = [
@@ -239,9 +241,9 @@
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
         }
 
-        // FUNÇÃO DE CARREGAR CONTADORES (DO SEU CÓDIGO)
         async function carregarContadores() {
             try {
+                // Aqui ele cria uma contagem separada na API
                 const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
                 const dataV = await resV.json();
                 document.getElementById('count-number').innerText = dataV.count || dataV.value;
@@ -353,7 +355,6 @@
                 setTimeout(() => {
                     document.getElementById('login-screen').style.display='none';
                     document.getElementById('main-profile').style.display='flex';
-                    // Ativa o contador após o login
                     document.getElementById('visit-counter').style.display='flex';
                     carregarContadores();
                     
