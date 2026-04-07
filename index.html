@@ -12,9 +12,9 @@
             font-family: 'Orbitron', sans-serif; color: #fff;
         }
 
-        #star-canvas, #cursor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        #star-canvas, #smoke-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         #star-canvas { z-index: 1; }
-        #cursor-canvas { z-index: 9999; }
+        #smoke-canvas { z-index: 9999; } /* Fumaça por cima de tudo */
 
         /* --- TELA DE ENTRADA --- */
         #login-screen {
@@ -119,9 +119,7 @@
 <body onload="init()">
 
     <canvas id="star-canvas"></canvas>
-    <canvas id="cursor-canvas"></canvas>
-
-    <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center; cursor:zoom-out;">
+    <canvas id="smoke-canvas"></canvas> <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center; cursor:zoom-out;">
         <img id="lightbox-img" src="" style="max-width:90%; max-height:90%; border:3px solid #00f2ff; border-radius:15px; box-shadow:0 0 50px #00f2ff;">
     </div>
 
@@ -182,9 +180,10 @@
     </div>
 
     <script>
-        let stars = [], particles = [], mouse = { x: -100, y: -100 };
+        let stars = [], mouse = { x: -100, y: -100 };
+        let smokeParticles = [];
 
-        function init() { startStars(); startCursorEffect(); }
+        function init() { startStars(); startSmokeEffect(); }
 
         function openRight(mode) {
             document.getElementById('profile-stats').style.display = 'none';
@@ -199,9 +198,9 @@
             } else if(mode === 'fotos') {
                 title.innerText = "MINHAS FOTOS";
                 body.innerHTML = `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:10px;">
-                    <img src="https://imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)" style="width:100%; border:1px solid #00f2ff; cursor:pointer;">
-                    <img src="https://imgur.com/7rKeKT8.png" onclick="zoom(this.src)" style="width:100%; border:1px solid #00f2ff; cursor:pointer;">
-                    <img src="https://imgur.com/Bx7jSbA.png" onclick="zoom(this.src)" style="width:100%; border:1px solid #00f2ff; cursor:pointer;">
+                    <img src="https://i.imgur.com/Ip2Bdxv.png" onclick="zoom(this.src)" style="width:100%; border:1px solid #00f2ff; cursor:pointer;">
+                    <img src="https://i.imgur.com/7rKeKT8.png" onclick="zoom(this.src)" style="width:100%; border:1px solid #00f2ff; cursor:pointer;">
+                    <img src="https://i.imgur.com/Bx7jSbA.png" onclick="zoom(this.src)" style="width:100%; border:1px solid #00f2ff; cursor:pointer;">
                 </div>`;
             } else {
                 title.innerText = "LISTA DE AMIGOS";
@@ -231,22 +230,73 @@
             } anim();
         }
 
-        function startCursorEffect() {
-            const canvas = document.getElementById('cursor-canvas');
+        // --- NOVO EFEITO FUMAÇA ---
+        function startSmokeEffect() {
+            const canvas = document.getElementById('smoke-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-            function anim() {
-                ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            window.addEventListener('mousemove', e => {
+                mouse.x = e.clientX; mouse.y = e.clientY;
+                // Cria múltiplas partículas de fumaça por movimento
+                for(let i = 0; i < 3; i++) {
+                    createSmokeParticle();
+                }
+            });
+
+            class SmokeParticle {
+                constructor(x, y) {
+                    this.x = x + (Math.random() - 0.5) * 10;
+                    this.y = y + (Math.random() - 0.5) * 10;
+                    this.size = Math.random() * 5 + 5; // Tamanho inicial pequeno
+                    this.maxSize = Math.random() * 40 + 20; // Tamanho máximo que expande
+                    this.speedX = (Math.random() - 0.5) * 1;
+                    this.speedY = (Math.random() - 0.5) * 1 - 0.5; // Sobe levemente
+                    this.opacity = 0.5;
+                    this.color = `0, 242, 255`; // Neon Blue
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    // Expande o tamanho suavemente
+                    if (this.size < this.maxSize) {
+                        this.size += 0.5;
+                    }
+                    // Diminui opacidade suavemente
+                    this.opacity -= 0.005;
+                }
+
+                draw() {
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = `rgb(${this.color})`;
+                    ctx.beginPath();
+                    // Desenha um círculo suave (fumaça)
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function createSmokeParticle() {
                 if(mouse.x > 0) {
-                    particles.push({ x: mouse.x, y: mouse.y, size: Math.random()*4+2, spdX: (Math.random()-0.5)*1, spdY: (Math.random()-0.5)*1, alpha: 1 });
+                    smokeParticles.push(new SmokeParticle(mouse.x, mouse.y));
                 }
-                for(let i=0; i<particles.length; i++){
-                    let p = particles[i]; p.x += p.spdX; p.y += p.spdY; p.alpha -= 0.02; p.size *= 0.95;
-                    if(p.alpha <= 0) { particles.splice(i, 1); i--; continue; }
-                    ctx.fillStyle = `rgba(0, 242, 255, ${p.alpha})`;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            }
+
+            function anim() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < smokeParticles.length; i++) {
+                    smokeParticles[i].update();
+                    smokeParticles[i].draw();
+                    
+                    // Remove partículas invisíveis
+                    if (smokeParticles[i].opacity <= 0) {
+                        smokeParticles.splice(i, 1);
+                        i--;
+                    }
                 }
+                ctx.globalAlpha = 1; // Reseta alpha global
                 requestAnimationFrame(anim);
             } anim();
         }
@@ -267,6 +317,8 @@
             audio.src = document.getElementById('playlist').value;
             audio.play();
         }
+
+        window.onresize = () => { location.reload(); }; // Simplificado para resetar canvas corretamente
     </script>
 </body>
 </html>
