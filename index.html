@@ -17,39 +17,46 @@
             color: #fff;
         }
 
-        /* --- FUNDO DE ESTRELAS (Sempre visível) --- */
+        /* --- FUNDO DE ESTRELAS (Sempre visível e atrás de tudo) --- */
         #star-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Fica atrás de tudo */
+            z-index: 1; /* Camada mais baixa */
             display: block;
         }
 
         /* --- TELA DE LOGIN --- */
         #login-screen {
             position: fixed;
-            z-index: 100;
+            z-index: 100; /* Camada mais alta */
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Transparente para ver as estrelas */
+            background: rgba(0, 0, 0, 0.85); /* Escuro, mas deixa ver as estrelas */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 1s ease;
+            transition: opacity 1s ease, visibility 1s;
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(10, 10, 20, 0.8);
             padding: 40px;
             border-radius: 20px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
+            border: 2px solid rgba(0, 242, 255, 0.4);
             text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        }
+
+        .login-box h2 {
+            color: #00f2ff;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00f2ff;
         }
 
         input[type="password"] {
@@ -62,6 +69,7 @@
             margin-bottom: 20px;
             text-align: center;
             font-size: 1.1rem;
+            width: 80%;
         }
 
         .btn-enter {
@@ -73,14 +81,22 @@
             cursor: pointer;
             font-weight: bold;
             text-transform: uppercase;
-            box-shadow: 0 0 15px #00f2ff;
+            box-shadow: 0 0 20px #00f2ff;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .btn-enter:hover {
+            box-shadow: 0 0 35px #00f2ff;
+            transform: scale(1.05);
         }
 
         /* --- PERFIL PRINCIPAL --- */
         #main-profile {
             display: none;
             opacity: 0;
-            z-index: 50;
+            z-index: 50; /* Camada do meio, acima das estrelas */
             position: relative;
             height: 100vh;
             padding: 40px;
@@ -93,60 +109,108 @@
             gap: 50px;
         }
 
+        /* Sidebar Esquerda */
         .sidebar {
             width: 320px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(0, 242, 255, 0.4);
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(0, 242, 255, 0.5);
             border-radius: 25px;
             padding: 25px;
             text-align: center;
             backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
         }
 
         .profile-pic {
             width: 200px;
             height: 200px;
             border-radius: 20px;
-            border: 2px solid #00f2ff;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+            border: 3px solid #00f2ff;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
             object-fit: cover;
             margin-bottom: 20px;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            font-size: 1.5rem;
+            text-shadow: 0 0 15px #00f2ff;
+            margin-bottom: 30px;
         }
 
         .menu-btn {
             width: 100%;
             padding: 12px;
-            margin: 8px 0;
+            margin: 10px 0;
             background: transparent;
-            border: 1px solid #00f2ff;
+            border: 2px solid #00f2ff;
             color: #00f2ff;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: 0.3s;
         }
 
+        .menu-btn:hover {
+            background: rgba(0, 242, 255, 0.15);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+
+        /* Conteúdos Escondidos */
         .hidden-content {
             display: none;
             background: rgba(0, 242, 255, 0.1);
             padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            border-radius: 12px;
+            margin-bottom: 15px;
             text-align: left;
+            border-left: 3px solid #00f2ff;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Galeria de Fotos */
+        .galeria-preview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         .galeria-preview img {
-            width: 45%;
-            margin: 2%;
-            border-radius: 5px;
+            width: 48%;
+            margin-bottom: 10px;
+            border-radius: 8px;
             border: 1px solid #00f2ff;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
         }
 
+        /* Player de Áudio Customizado */
+        .player-container {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.8); /* Efeito neon no player */
+        }
+
+        /* Contador de Visitas */
         .counter-box {
             position: fixed;
-            bottom: 20px;
-            right: 30px;
+            bottom: 25px;
+            right: 40px;
             color: #00f2ff;
             font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -156,8 +220,8 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2 style="color: #00f2ff; margin-bottom: 20px;">LOGIN</h2>
-            <input type="password" id="passInput" placeholder="SENHA">
+            <h2>LOGIN RESTRITO</h2>
+            <input type="password" id="passInput" placeholder="DIGITE A SENHA">
             <br>
             <button class="btn-enter" onclick="checkPass()">Entrar</button>
         </div>
@@ -166,106 +230,178 @@
     <div id="main-profile">
         <div class="container">
             <div class="sidebar">
-                <img src="https://i.imgur.com/5UmrWFt.png" class="profile-pic">
-                <h2 style="text-shadow: 0 0 10px #00f2ff;">Gabriel Leandro</h2>
+                <img src="https://via.placeholder.com/200/444444/FFFFFF?text=FOTO" class="profile-pic" alt="Gabriel Leandro">
                 
-                <button class="menu-btn" onclick="toggleElement('amigos-list')">AMIGOS</button>
+                <h2>Gabriel Leandro</h2>
+                
+                <button class="menu-btn" onclick="toggleElement('amigos-list')">LISTA DE AMIGOS</button>
                 <div id="amigos-list" class="hidden-content">
-                    • Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando
+                    • Marbella<br>
+                    • Gold<br>
+                    • Venon<br>
+                    • Gothica<br>
+                    • Armando
                 </div>
 
-                <button class="menu-btn" onclick="toggleElement('fotos-box')">FOTOS</button>
+                <button class="menu-btn" onclick="toggleElement('fotos-box')">MINHAS FOTOS</button>
                 <div id="fotos-box" class="hidden-content">
                     <div class="galeria-preview">
-                        <img src="https://i.imgur.com/5UmrWFt.png">
-                        <img src="https://i.imgur.com/5UmrWFt.png">
+                        <img src="https://via.placeholder.com/100/444444/FFFFFF?text=FOTO1">
+                        <img src="https://via.placeholder.com/100/444444/FFFFFF?text=FOTO2">
+                        <img src="https://via.placeholder.com/100/444444/FFFFFF?text=FOTO3">
+                        <img src="https://via.placeholder.com/100/444444/FFFFFF?text=FOTO4">
                     </div>
                 </div>
 
-                <div style="margin-top:20px;">
+                <div class="player-container">
                     <audio id="bgMusic" controls loop>
                         <source src="https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" type="audio/mpeg">
                     </audio>
                 </div>
             </div>
-        </div>
+            
+            </div>
 
         <div class="counter-box">
-            VISITAS: <span id="visitCount">0</span>
+            SISTEMA ATIVO | VISITAS: <span id="visitCount">0</span>
         </div>
     </div>
 
     <script>
-        // Iniciar Estrelas
-        function startStars() {
-            const canvas = document.getElementById('star-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        // --- SISTEMA DE ESTRELAS (Canvas) ---
+        let canvas, ctx, stars;
 
-            const stars = [];
-            for(let i = 0; i < 300; i++) {
+        function startStars() {
+            canvas = document.getElementById('star-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Ajusta tamanho do canvas ao carregar
+            resizeCanvas();
+
+            // Cria array de estrelas
+            stars = [];
+            const numStars = 350;
+            for(let i = 0; i < numStars; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    speed: Math.random() * 0.5 + 0.1
+                    size: Math.random() * 2, // Tamanho variado
+                    speed: Math.random() * 0.4 + 0.1, // Velocidade variada
+                    opacity: Math.random() // Brilho inicial variado
                 });
             }
 
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#fff";
-                stars.forEach(s => {
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    s.y -= s.speed;
-                    if(s.y < 0) s.y = canvas.height;
-                });
-                requestAnimationFrame(animate);
-            }
+            // Inicia animação
             animate();
         }
 
-        // Sistema de Senha
+        function animate() {
+            // Limpa o canvas para o próximo frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Desenha e move cada estrela
+            ctx.fillStyle = "#fff";
+            stars.forEach(s => {
+                // Efeito de piscar sutil
+                s.opacity += (Math.random() - 0.5) * 0.05;
+                if(s.opacity < 0.1) s.opacity = 0.1;
+                if(s.opacity > 1) s.opacity = 1;
+
+                ctx.globalAlpha = s.opacity; // Aplica opacidade
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Move a estrela para cima (sensação de viagem espacial)
+                s.y -= s.speed;
+
+                // Reinicia a estrela no fundo se ela sair do topo
+                if(s.y < 0) {
+                    s.y = canvas.height;
+                    s.x = Math.random() * canvas.width;
+                }
+            });
+
+            ctx.globalAlpha = 1; // Reseta opacidade global
+            requestAnimationFrame(animate); // Chama próximo frame
+        }
+
+        // Ajusta canvas ao redimensionar a janela
+        function resizeCanvas() {
+            if(canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        }
+        window.onresize = resizeCanvas;
+
+
+        // --- SISTEMA DE SENHA ---
         function checkPass() {
             const pass = document.getElementById('passInput').value;
             const audio = document.getElementById('bgMusic');
+            const loginScreen = document.getElementById('login-screen');
+            const mainProfile = document.getElementById('main-profile');
 
             if (pass === "1009") {
-                document.getElementById('login-screen').style.opacity = '0';
+                // Esconde tela de login com transição
+                loginScreen.style.opacity = '0';
+                loginScreen.style.visibility = 'hidden';
+
+                // Mostra perfil principal com delay para transição suave
                 setTimeout(() => {
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('main-profile').style.display = 'block';
+                    loginScreen.style.display = 'none';
+                    mainProfile.style.display = 'block';
+                    
+                    // Delay infinitesimal para garantir que display:block foi aplicado antes da opacidade
                     setTimeout(() => {
-                        document.getElementById('main-profile').style.opacity = '1';
-                        audio.play();
+                        mainProfile.style.opacity = '1';
+                        // Tenta tocar a música (pode falhar em alguns navegadores se não houver interação)
+                        audio.play().catch(error => {
+                            console.log("Autoplay bloqueado pelo navegador. O usuário precisa clicar no player.");
+                        });
                     }, 50);
-                }, 1000);
+                }, 1000); // Tempo da transição de opacidade da tela de login
+
+                // Inicia o contador de visitas
                 initCounter();
             } else {
-                alert("Senha incorreta!");
+                alert("Senha incorreta! Acesso negado.");
+                document.getElementById('passInput').value = ""; // Limpa o campo
             }
         }
 
+        // Permite dar Enter no campo de senha
+        document.getElementById('passInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPass();
+            }
+        });
+
+
+        // --- FUNCIONALIDADES DO PERFIL ---
+        
+        // Mostrar/Esconder seções (Amigos e Fotos)
         function toggleElement(id) {
             const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            const isVisible = (el.style.display === 'block');
+            
+            // Fecha todas as seções primeiro
+            document.querySelectorAll('.hidden-content').forEach(item => {
+                item.style.display = 'none';
+            });
+
+            // Abre apenas a seção clicada, se estava fechada
+            el.style.display = isVisible ? 'none' : 'block';
         }
 
+        // Contador de Visitas Simplificado (localStorage)
         function initCounter() {
-            let visits = localStorage.getItem('wrs_v') || 0;
+            let visits = localStorage.getItem('wrs_visits') || 0;
             visits++;
-            localStorage.setItem('wrs_v', visits);
+            localStorage.setItem('wrs_visits', visits);
             document.getElementById('visitCount').innerText = visits;
         }
-
-        window.onresize = () => {
-            const canvas = document.getElementById('star-canvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
     </script>
 </body>
 </html>
