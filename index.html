@@ -122,6 +122,7 @@
             border-radius: 10px;
             font-family: 'Orbitron', sans-serif;
             transition: 0.3s;
+            font-size: 0.85rem;
         }
         .menu-btn:hover { background: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
 
@@ -136,7 +137,23 @@
             overflow-y: auto;
             backdrop-filter: blur(10px);
             animation: fadeIn 0.5s ease;
+            position: relative;
         }
+
+        .btn-voltar {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00f2ff;
+            color: #00f2ff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-voltar:hover { background: #00f2ff; color: #000; }
 
         .galeria-grid {
             display: grid;
@@ -154,9 +171,9 @@
         }
         .galeria-grid img:hover { border-color: #00f2ff; transform: scale(1.03); }
 
-        .amigos-list-right {
-            font-size: 1.2rem;
-            line-height: 2.5;
+        .amigos-list-right, .sobre-mim-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: #00f2ff;
             text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
         }
@@ -174,7 +191,7 @@
         }
         #lightbox img { max-width: 90%; max-height: 90%; border: 3px solid #00f2ff; border-radius: 15px; box-shadow: 0 0 50px #00f2ff; }
 
-        /* --- RADIO / PLAYER (CORES SINCRONIZADAS) --- */
+        /* --- RADIO / PLAYER --- */
         .player-card {
             margin-top: 30px;
             background: rgba(0, 0, 0, 0.9);
@@ -198,11 +215,6 @@
             outline: none;
         }
         
-        .playlist-select option {
-            background: #000;
-            color: #00f2ff;
-        }
-
         audio {
             width: 100%;
             height: 35px;
@@ -237,6 +249,7 @@
             <img src="https://i.imgur.com/Ip2Bdxv.png" class="profile-pic">
             <h2 style="text-shadow: 0 0 15px #00f2ff; font-size: 1.3rem;">Gabriel Leandro</h2>
             
+            <button class="menu-btn" onclick="openRight('sobre')">SOBRE MIM</button>
             <button class="menu-btn" onclick="openRight('amigos')">AMIGOS</button>
             <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
 
@@ -254,7 +267,8 @@
         </div>
 
         <div id="content-right">
-            <h2 id="right-title" style="color: #00f2ff; border-bottom: 1px solid #00f2ff33; padding-bottom: 10px;"></h2>
+            <button class="btn-voltar" onclick="document.getElementById('content-right').style.display='none'">← VOLTAR PARA A PÁGINA</button>
+            <h2 id="right-title" style="color: #00f2ff; border-bottom: 1px solid #00f2ff33; padding-bottom: 10px; margin-top: 0;"></h2>
             <div id="right-body"></div>
         </div>
 
@@ -272,7 +286,14 @@
             const body = document.getElementById('right-body');
             right.style.display = "block";
             
-            if(mode === 'fotos') {
+            if(mode === 'sobre') {
+                title.innerText = "SOBRE MIM";
+                body.innerHTML = `
+                    <div class="sobre-mim-text">
+                        Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>
+                        Married Mnna (1013) ❤️
+                    </div>`;
+            } else if(mode === 'fotos') {
                 title.innerText = "MINHAS FOTOS";
                 body.innerHTML = `
                     <div class="galeria-grid">
