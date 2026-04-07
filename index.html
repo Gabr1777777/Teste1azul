@@ -13,9 +13,10 @@
             cursor: none;
         }
 
-        #star-canvas, #cursor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-        #star-canvas { z-index: 1; }
-        #cursor-canvas { z-index: 9999; }
+        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        
+        /* AJUSTE: Cursor agora com o maior Z-index para sobrepor a foto ampliada */
+        #cursor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20000; }
 
         /* --- TELA DE ENTRADA --- */
         #login-screen {
@@ -117,7 +118,6 @@
             backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
         }
 
-        /* Container para forçar o botão a ficar em cima */
         .header-right {
             display: flex;
             flex-direction: column;
@@ -144,7 +144,7 @@
     <canvas id="star-canvas"></canvas>
     <canvas id="cursor-canvas"></canvas>
 
-    <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center;">
+    <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:15000; justify-content:center; align-items:center;">
         <img id="lightbox-img" src="" style="max-width:90%; max-height:90%; border:2px solid #00f2ff; border-radius:10px;">
     </div>
 
