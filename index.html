@@ -63,7 +63,7 @@
             width: 320px; background: rgba(0, 0, 0, 0.85);
             border: 1px solid rgba(0, 242, 255, 0.5); border-radius: 25px;
             padding: 25px; text-align: center; backdrop-filter: blur(10px);
-            height: fit-content;
+            height: fit-content; position: relative; z-index: 70;
         }
         .profile-pic {
             width: 180px; height: 180px; border-radius: 20px;
@@ -92,14 +92,16 @@
         }
         .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); transform: scale(1.05); }
 
-        /* --- CONTADOR DE VISITAS (RESTAURADO) --- */
+        /* --- CONTADOR DE VISITAS (POSIÇÃO FIXADA) --- */
         .visit-counter {
-            margin-top: 20px; padding-top: 15px;
-            border-top: 1px solid rgba(0, 242, 255, 0.2);
-            font-size: 0.7rem; color: #00f2ff;
-            letter-spacing: 2px;
+            margin-top: 25px; 
+            padding: 10px;
+            border-top: 1px solid rgba(0, 242, 255, 0.3);
+            font-size: 0.75rem; color: #00f2ff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        #count-val { font-weight: bold; color: #fff; text-shadow: 0 0 10px #00f2ff; }
+        #count-val { font-weight: bold; color: #fff; text-shadow: 0 0 10px #00f2ff; font-family: monospace; font-size: 1rem; }
 
         /* --- SLIDER CENTRAL --- */
         .slider-container {
@@ -187,7 +189,7 @@
             </div>
 
             <div class="visit-counter">
-                VISITAS GLOBAIS: <span id="count-val">000</span>
+                Visitas: <span id="count-val">...</span>
             </div>
         </div>
 
@@ -232,20 +234,20 @@
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
         }
 
-        // LÓGICA DO CONTADOR DE VISITAS
         async function updateCounter() {
             try {
-                const response = await fetch('https://api.counterapi.dev/v1/gabriel_leandro/wrs_space/increment');
+                // Usando uma chave única para garantir que o seu contador seja exclusivo
+                const response = await fetch('https://api.counterapi.dev/v1/gabriel_leandro_wrs/hits/increment');
                 const data = await response.json();
-                document.getElementById('count-val').innerText = data.count.toString().padStart(3, '0');
+                document.getElementById('count-val').innerText = data.count.toLocaleString();
             } catch (e) {
-                document.getElementById('count-val').innerText = "ONLINE";
+                document.getElementById('count-val').innerText = "OFFLINE";
             }
         }
 
         function setupSlider() {
             const wrap = document.getElementById('slide-wrap');
-            fotosGaleria.forEach((src, i) => {
+            fotosGaleria.forEach((src) => {
                 const img = document.createElement('img');
                 img.src = src; img.className = 'slide-img';
                 wrap.appendChild(img);
