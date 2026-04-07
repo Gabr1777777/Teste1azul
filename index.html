@@ -15,34 +15,37 @@
             cursor: default;
         }
 
-        /* --- NOVO EFEITO DE LUZES PASSANDO (VISIBILIDADE AUMENTADA) --- */
+        /* --- EFEITO DE LUZES PASSANDO (MELHORADO: MAIS SUAVE E BONITO) --- */
         body::before {
-            content: ""; position: fixed; top: -100%; left: -100%; width: 300%; height: 300%;
-            /* Rastro branco mais visível */
-            background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%);
-            /* Duração mais longa para ser notada */
-            animation: lightSweep 10s linear infinite; pointer-events: none; z-index: 2;
+            content: ""; position: fixed; top: -150%; left: -150%; width: 400%; height: 400%;
+            /* Mistura suave com as cores do tema e branco puro */
+            background: linear-gradient(135deg, transparent 40%, var(--main-color) 48%, #ffffff 50%, var(--main-color) 52%, transparent 60%);
+            /* Blur intenso para transformar linhas em rastros esfumaçados (Auroras) */
+            backdrop-filter: blur(100px);
+            animation: lightSweep 15s linear infinite; pointer-events: none; z-index: 2;
         }
 
         @keyframes lightSweep {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(0%, 0%) rotate(360deg); }
+            0% { transform: translate(-25%, -25%) rotate(0deg); opacity: 0; }
+            5% { opacity: 0.2; }
+            50% { transform: translate(0%, 0%) rotate(180deg); opacity: 0.1; }
+            95% { opacity: 0.2; }
+            100% { transform: translate(-25%, -25%) rotate(360deg); opacity: 0; }
         }
 
-        /* Luzes piscando no fundo (VISIBILIDADE AUMENTADA) */
+        /* Luzes piscando no fundo (MELHORADO: PULSO ATMOSFÉRICO SUAVE) */
         .ambient-light {
-            position: fixed; width: 100%; height: 100%; top: 0; left: 0;
-            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, transparent 70%);
+            position: fixed; width: 150%; height: 150%; top: -25%; left: -25%;
+            /* Borda ultra suave para simular pulso orgânico */
+            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, rgba(0,0,0,0.2) 60%, transparent 80%);
             opacity: 0; pointer-events: none; z-index: 1;
-            /* Duração maior para o flash ser percebido */
-            animation: ambientFlash 12s ease-in-out infinite;
+            animation: ambientPulse 20s ease-in-out infinite;
         }
 
-        @keyframes ambientFlash {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 0.1; } /* Opacidade máxima aumentada */
-            52% { opacity: 0.2; } /* Flash mais forte no pico */
-            54% { opacity: 0.1; }
+        @keyframes ambientPulse {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            48%, 52% { opacity: 0.15; transform: scale(1.05); }
+            50% { opacity: 0.25; transform: scale(1.1); } /* Pulso mais forte, porém suave */
         }
 
         #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
@@ -115,7 +118,6 @@
         }
         .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px var(--main-color); transform: scale(1.05); }
 
-        /* CONTADORES E FERRAMENTAS */
         #ui-tools {
             position: fixed; bottom: 20px; right: 20px; z-index: 1000001;
             display: none; gap: 10px; align-items: flex-end;
@@ -204,7 +206,6 @@
         <div class="sidebar">
             <img src="https://i.imgur.com/Ip2Bdxv.png" class="profile-pic">
             <h2 class="animated-gradient-text" style="font-size: 1.2rem;">Gabriel Leandro</h2>
-            
             <button class="menu-btn" onclick="openRight('sobre')">SOBRE MIM</button>
             <button class="menu-btn" onclick="openRight('amigos')">AMIGOS</button>
             <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
@@ -249,12 +250,7 @@
         }
 
         let stars = [];
-        const fotosGaleria = [
-            "https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", 
-            "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", 
-            "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", 
-            "https://i.imgur.com/pTlq477.png"
-        ];
+        const fotosGaleria = ["https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", "https://i.imgur.com/pTlq477.png"];
         const playlist = [
             { name: "Bon Jovi - Livin on a Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" },
             { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=b5bj4smr&dl=1" },
@@ -270,77 +266,6 @@
             audio.src = playlist[currentTrack].url;
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
         }
-
-        async function carregarContadores() {
-            try {
-                const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
-                const dataV = await resV.json();
-                document.getElementById('count-number').innerText = dataV.count || dataV.value;
-            } catch(e) { document.getElementById('count-number').innerText = "1"; }
-        }
-
-        function setupSlider() {
-            const wrap = document.getElementById('slide-wrap');
-            fotosGaleria.forEach((src) => {
-                const img = document.createElement('img');
-                img.src = src; img.className = 'slide-img';
-                wrap.appendChild(img);
-            });
-            let idx = 0;
-            const slides = document.querySelectorAll('.slide-img');
-            function updateSlider() {
-                slides.forEach(s => s.className = 'slide-img');
-                if(slides[idx]) {
-                    const prev = (idx - 1 + slides.length) % slides.length;
-                    const next = (idx + 1) % slides.length;
-                    slides[idx].classList.add('active');
-                    slides[prev].classList.add('prev');
-                    slides[next].classList.add('next');
-                    idx = (idx + 1) % slides.length;
-                }
-            }
-            updateSlider(); setInterval(updateSlider, 3000);
-        }
-
-        function togglePlay() {
-            if (audio.paused) { audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
-            else { audio.pause(); document.getElementById('playBtn').innerText = "▶"; }
-        }
-        function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(); }
-        function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(); }
-        function loadTrack() {
-            audio.src = playlist[currentTrack].url;
-            document.getElementById('trackName').innerText = playlist[currentTrack].name;
-            audio.play(); document.getElementById('playBtn').innerText = "⏸";
-        }
-        function updateProgress() { document.getElementById('progBar').style.width = (audio.currentTime / audio.duration) * 100 + "%"; }
-        function seek(e) { audio.currentTime = (e.offsetX / e.currentTarget.offsetWidth) * audio.duration; }
-        function setVolume(v) { audio.volume = v; }
-
-        function openRight(mode) {
-            const rightTitle = document.getElementById('right-title');
-            const body = document.getElementById('right-body');
-            document.getElementById('content-right').style.display = "block";
-            document.getElementById('center-slider').style.visibility = "hidden";
-            if(mode === 'sobre') {
-                rightTitle.innerText = "SOBRE MIM";
-                body.innerHTML = `<div style="color:var(--main-color); line-height:1.8;">Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>Married Mnna (1013) ❤️</div>`;
-            } else if(mode === 'fotos') {
-                rightTitle.innerText = "MINHAS FOTOS";
-                let gridHTML = `<div class="galeria-grid">`;
-                fotosGaleria.forEach(src => { gridHTML += `<img src="${src}" onclick="zoom(this.src)">`; });
-                gridHTML += `</div>`;
-                body.innerHTML = gridHTML;
-            } else {
-                rightTitle.innerText = "LISTA DE AMIGOS";
-                body.innerHTML = `<div style="color:var(--main-color);">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
-            }
-        }
-        function closeRight() { 
-            document.getElementById('content-right').style.display='none'; 
-            document.getElementById('center-slider').style.visibility = "visible";
-        }
-        function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
         function startStars() {
             const canvas = document.getElementById('star-canvas');
@@ -383,6 +308,41 @@
             anim();
         }
 
+        function setupSlider() {
+            const wrap = document.getElementById('slide-wrap');
+            fotosGaleria.forEach(src => { const img = document.createElement('img'); img.src = src; img.className = 'slide-img'; wrap.appendChild(img); });
+            let idx = 0; const slides = document.querySelectorAll('.slide-img');
+            function updateSlider() {
+                slides.forEach(s => s.className = 'slide-img');
+                if(slides[idx]) {
+                    slides[idx].classList.add('active');
+                    slides[(idx-1+slides.length)%slides.length].classList.add('prev');
+                    slides[(idx+1)%slides.length].classList.add('next');
+                    idx = (idx+1)%slides.length;
+                }
+            }
+            updateSlider(); setInterval(updateSlider, 3000);
+        }
+
+        function togglePlay() { audio.paused ? (audio.play(), document.getElementById('playBtn').innerText="⏸") : (audio.pause(), document.getElementById('playBtn').innerText="▶"); }
+        function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(); }
+        function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(); }
+        function loadTrack() { audio.src = playlist[currentTrack].url; document.getElementById('trackName').innerText = playlist[currentTrack].name; audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
+        function updateProgress() { document.getElementById('progBar').style.width = (audio.currentTime / audio.duration) * 100 + "%"; }
+        function seek(e) { audio.currentTime = (e.offsetX / e.currentTarget.offsetWidth) * audio.duration; }
+        function setVolume(v) { audio.volume = v; }
+        
+        function openRight(mode) {
+            document.getElementById('content-right').style.display = "block";
+            document.getElementById('center-slider').style.visibility = "hidden";
+            const body = document.getElementById('right-body');
+            const title = document.getElementById('right-title');
+            if(mode==='sobre') { title.innerText="SOBRE MIM"; body.innerHTML=`<div style="color:var(--main-color)">Vendo Gifs, Pcback, Pstyle e Fundos para XAT - Married Mnna ❤️</div>`; }
+            else if(mode==='fotos') { title.innerText="FOTOS"; body.innerHTML=fotosGaleria.map(s => `<img src="${s}" style="width:100px; margin:5px; border:1px solid var(--main-color)">`).join(''); }
+            else { title.innerText="AMIGOS"; body.innerHTML=`<div style="color:var(--main-color)">• Marbella • Gold • Venon • Gothica</div>`; }
+        }
+        function closeRight() { document.getElementById('content-right').style.display='none'; document.getElementById('center-slider').style.visibility="visible"; }
+
         function checkPass() {
             if(document.getElementById('passInput').value === "1009") {
                 document.getElementById('login-screen').style.opacity='0';
@@ -393,7 +353,7 @@
                     carregarContadores();
                     setTimeout(() => { document.getElementById('main-profile').style.opacity='1'; audio.play(); }, 50);
                 }, 1000);
-            } else { alert("Senha incorreta!"); }
+            } else alert("Senha incorreta!");
         }
     </script>
 </body>
