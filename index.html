@@ -1,294 +1,264 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Galeria Netflix Style PRO</title>
+    <meta charset="UTF-8">
+    <title>XatSpace Premium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #0f0f0f;
-  color: white;
-  display: flex;
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+        }
 
-/* MENU */
-.menu {
-  width: 240px;
-  background: #141414;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-}
+        /* --- TELA DE LOGIN --- */
+        #login-screen {
+            position: fixed;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #0a0a2e 0%, #000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
+        }
 
-/* PERFIL */
-.profile {
-  text-align: center;
-  margin-bottom: 30px;
-}
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
 
-.profile img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 2px solid #e50914;
-  margin-bottom: 10px;
-}
+        input[type="password"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
 
-.profile h3 {
-  margin: 5px 0;
-}
+        .btn-enter {
+            padding: 10px 30px;
+            background: #0066ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px #0066ff;
+        }
 
-.profile p {
-  font-size: 12px;
-  color: #aaa;
-}
+        /* --- PERFIL --- */
+        #main-profile {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease;
+            position: relative;
+            height: 100vh;
+            padding: 40px;
+            box-sizing: border-box;
+        }
 
-/* BOTÕES */
-.menu button {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  background: #222;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: 0.3s;
-}
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
 
-.menu button:hover {
-  background: #e50914;
-}
+        .container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
 
-/* CONTEÚDO */
-.content {
-  flex: 1;
-  padding: 20px;
-}
+        /* Sidebar Esquerda */
+        .sidebar {
+            width: 300px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+        }
 
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 276px);
-  gap: 15px;
-}
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid #00f2ff;
+            box-shadow: 0 0 20px #00f2ff;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
 
-/* CARD */
-.card {
-  width: 276px;
-  height: 232px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  cursor: pointer;
-}
+        h2 { font-size: 1.5rem; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
 
-/* IMAGEM */
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: 0.4s;
-}
+        .menu-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: transparent;
+            border: 1px solid #00f2ff;
+            color: #00f2ff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-family: 'Orbitron', sans-serif;
+        }
 
-.card:hover img {
-  transform: scale(1.1);
-}
+        .menu-btn:hover {
+            background: #00f2ff;
+            color: #000;
+            box-shadow: 0 0 20px #00f2ff;
+        }
 
-/* NUMERO */
-.card span {
-  position: absolute;
-  top: 8px;
-  left: 10px;
-  background: rgba(0,0,0,0.7);
-  padding: 4px 8px;
-  border-radius: 4px;
-  z-index: 2;
-}
+        /* Listas Ocultas */
+        .hidden-content {
+            display: none;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+        }
 
-/* PLACEHOLDER */
-.placeholder {
-  width: 100%;
-  height: 100%;
-  background: #1c1c1c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  font-size: 22px;
-}
-
-/* MODAL */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.4s;
-}
-
-.modal.active {
-  opacity: 1;
-  pointer-events: all;
-  background: rgba(0,0,0,0.95);
-}
-
-.modal img {
-  width: 1202px;
-  height: 733px;
-  object-fit: cover;
-  border-radius: 10px;
-  transform: scale(0.7);
-  opacity: 0;
-  transition: 0.4s;
-}
-
-.modal.active img {
-  transform: scale(1);
-  opacity: 1;
-}
-
-/* FECHAR */
-.close {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  font-size: 30px;
-  cursor: pointer;
-  opacity: 0;
-}
-
-.modal.active .close {
-  opacity: 1;
-}
-</style>
+        /* Contador */
+        .counter-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: #00f2ff;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="menu">
+    <div id="login-screen">
+        <div class="login-box">
+            <h3>SISTEMA DE ACESSO</h3>
+            <input type="password" id="passInput" placeholder="Senha">
+            <br>
+            <button class="btn-enter" onclick="checkPass()">ENTRE</button>
+        </div>
+    </div>
 
-  <!-- PERFIL -->
-  <div class="profile">
-    <img src="https://i.imgur.com/2DhmtJ4.png">
-    <h3>iiCarvaozim</h3>
-    <p>/Design/ 2026</p>
-  </div>
+    <canvas id="star-canvas"></canvas>
+    
+    <div id="main-profile">
+        <div class="container">
+            <div class="sidebar">
+                <img src="https://via.placeholder.com/180" class="profile-pic" alt="Perfil">
+                <h2>Gabriel Leandro</h2>
+                
+                <button class="menu-btn" onclick="toggleElement('amigos-list')">AMIGOS</button>
+                <div id="amigos-list" class="hidden-content">
+                    • Alpha<br>• Nova<br>• Orion<br>• Shadow<br>• Luna
+                </div>
 
-  <!-- BOTÕES -->
-  <button onclick="trocarPagina('fundos')">Galerias de Fundos</button>
-  <button onclick="trocarPagina('pcback')">PCBACK</button>
-  <button onclick="trocarPagina('perfils')">Perfils</button>
+                <button class="menu-btn" onclick="toggleElement('fotos-box')">FOTOS</button>
+                <div id="fotos-box" class="hidden-content">
+                    Galeria Privada (Em breve)
+                </div>
 
-</div>
+                <div style="margin-top: 20px;">
+                    <audio id="bgMusic" controls style="width: 100%; height: 30px;">
+                        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        </div>
 
-<div class="content">
-  <h2 id="titulo">Galeria</h2>
-  <div class="grid" id="grid"></div>
-</div>
+        <div class="counter-box">
+            VISITAS: <span id="visitCount">0</span>
+        </div>
+    </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <span class="close" onclick="fechar()">✖</span>
-  <img id="imgModal">
-</div>
+    <script>
+        // Sistema de Senha
+        function checkPass() {
+            const pass = document.getElementById('passInput').value;
+            if (pass === "1009") {
+                document.getElementById('login-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('main-profile').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('main-profile').style.opacity = '1';
+                        document.getElementById('bgMusic').play(); // Toca música ao entrar
+                    }, 50);
+                }, 1000);
+                startStars();
+                initCounter();
+            } else {
+                alert("Senha Incorreta!");
+            }
+        }
 
-<script>
+        // Mostrar/Esconder listas
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
 
-/* PÁGINAS */
-const paginas = {
+        // Contador Simples (Persistente no Navegador)
+        function initCounter() {
+            let visits = localStorage.getItem('visitCounter') || 0;
+            visits++;
+            localStorage.setItem('visitCounter', visits);
+            document.getElementById('visitCount').innerText = visits;
+        }
 
-  fundos: [
-    "https://xatimg.com/image/LhPTjinBD63k.png",
-    "https://xatimg.com/image/jEluPHc8kDBS.png",
-    "https://xatimg.com/image/M5KeuOtU2NpC.png",
-    "https://xatimg.com/image/4jN5TkdSc7x2.png",
-    "https://xatimg.com/image/lVL1GmAicIdb.png"
-  ],
+        // Efeito de Estrelas (Espaço)
+        function startStars() {
+            const canvas = document.getElementById('star-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-  pcback: [
-    "https://xatimg.com/image/jZxk3vbSyvkO.png",
-    "https://xatimg.com/image/eNTr7eK5Fzkx.png",
-    "https://xatimg.com/image/BMqpZZpgVYRg.png",
-    "https://xatimg.com/image/OcDf7xQbS78A.png",
-    "https://xatimg.com/image/7XZ05yVGKxLh.png",
-    "https://xatimg.com/image/z77euV46c21d.png",
-    "https://xatimg.com/image/BduAWc9oW2KY.png",
-    "https://xatimg.com/image/wXVGtiwFvtph.png",
-    "https://xatimg.com/image/vQZ9oxOZgWDE.png",
-    "https://xatimg.com/image/smWJYWh2EbF8.png",
-    "https://xatimg.com/image/LHprk6E47qv3.png",
-    "https://xatimg.com/image/4N14WUti23Wp.png",
-    "https://xatimg.com/image/LySTKBuJfezZ.png",
-    "https://xatimg.com/image/yXRojPIaB9rG.jpg",
-    "https://xatimg.com/image/vFE2aJvDe9ET.png",
-    "https://xatimg.com/image/DJcTgtIiVIKH.jpg",
-    "https://xatimg.com/image/PisrchM5XiB4.png",
-    "https://xatimg.com/image/8mRaFlDxF33B.png",
-    "https://xatimg.com/image/RY0binDJKasq.png"
-  ],
+            const stars = [];
+            for(let i = 0; i < 200; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5
+                });
+            }
 
-  perfils: new Array(6).fill(null)
-};
-
-/* TROCAR PÁGINA */
-function trocarPagina(nome){
-  const grid = document.getElementById("grid");
-  const titulo = document.getElementById("titulo");
-
-  grid.innerHTML = "";
-  titulo.innerText = nome.toUpperCase();
-
-  paginas[nome].forEach((img, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    if(img){
-      card.innerHTML = `
-        <span>${i + 1}</span>
-        <img src="${img}" onclick="abrir('${img}')">
-      `;
-    } else {
-      card.innerHTML = `
-        <span>${i + 1}</span>
-        <div class="placeholder">CARD</div>
-      `;
-    }
-
-    grid.appendChild(card);
-  });
-}
-
-/* MODAL */
-function abrir(src){
-  document.getElementById("imgModal").src = src;
-  document.getElementById("modal").classList.add("active");
-}
-
-function fechar(){
-  document.getElementById("modal").classList.remove("active");
-}
-
-/* FECHAR FORA */
-document.getElementById("modal").addEventListener("click", function(e){
-  if(e.target.id === "modal"){
-    fechar();
-  }
-});
-
-/* INICIAR */
-trocarPagina('fundos');
-
-</script>
-
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#fff';
+                stars.forEach(s => {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    s.y += s.speed;
+                    if(s.y > canvas.height) s.y = 0;
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
 </body>
 </html>
