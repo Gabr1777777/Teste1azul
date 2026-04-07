@@ -59,7 +59,6 @@
             object-fit: cover; margin-bottom: 20px;
         }
 
-        /* Efeito Hover nos Botões */
         .menu-btn {
             width: 100%; padding: 15px; margin: 10px 0; background: transparent;
             border: 2px solid #00f2ff; color: #00f2ff; cursor: pointer;
@@ -83,18 +82,6 @@
         .volume-slider { -webkit-appearance: none; width: 60%; height: 3px; background: rgba(0, 242, 255, 0.3); outline: none; }
         .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #00f2ff; border-radius: 50%; cursor: pointer; }
 
-        /* --- INTERFACE CENTRAL (SCANNER) --- */
-        #profile-stats { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-        .scanner-circle {
-            width: 250px; height: 250px; border: 2px solid rgba(0, 242, 255, 0.2);
-            border-radius: 50%; position: relative; display: flex; justify-content: center; align-items: center;
-            animation: pulse 4s infinite;
-        }
-        .scanner-circle::before {
-            content: ''; width: 110%; height: 110%; border: 2px dashed #00f2ff;
-            border-radius: 50%; position: absolute; animation: spin 10s linear infinite;
-        }
-
         /* --- PAINEL DA DIREITA --- */
         #content-right {
             flex: 1; background: rgba(0, 0, 0, 0.8);
@@ -103,7 +90,6 @@
             backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
         }
 
-        /* Efeito Hover na Galeria */
         .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
         .galeria-grid img { 
             width: 100%; border: 1px solid #00f2ff33; border-radius: 8px; cursor: pointer; 
@@ -115,8 +101,6 @@
             box-shadow: 0 0 15px #00f2ff;
         }
 
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { box-shadow: 0 0 10px #00f2ff22; } 50% { box-shadow: 0 0 30px #00f2ff44; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
@@ -162,20 +146,7 @@
             </div>
         </div>
 
-        <div id="profile-stats">
-            <div class="scanner-circle">
-                <div style="text-align: center;">
-                    <span style="font-size: 0.6rem; color: #00f2ff; display: block;">SCANNING...</span>
-                    <span style="font-size: 1rem; color: #fff;">WRS-SYSTEM</span>
-                </div>
-            </div>
-            <div style="text-align: left; color: #00f2ff; font-size: 0.8rem; margin-top: 30px; line-height: 1.6;">
-                > USER_ID: 1777777<br>
-                > RANK: MAIN OWNER<br>
-                > PARTNER: MNNA (1013) ❤️<br>
-                > STATUS: ONLINE
-            </div>
-        </div>
+        <div style="flex: 1;"></div>
 
         <div id="content-right">
             <button class="btn-enter" style="margin-bottom:20px; padding:8px 15px;" onclick="closeRight()">← VOLTAR</button>
@@ -203,7 +174,6 @@
             document.getElementById('trackName').innerText = playlist[currentTrack].name;
         }
 
-        // --- RASTRO DO CURSOR ---
         function startCursorEffect() {
             const canvas = document.getElementById('cursor-canvas');
             const ctx = canvas.getContext('2d');
@@ -226,7 +196,6 @@
             } draw();
         }
 
-        // --- PLAYER ---
         function togglePlay() {
             if (audio.paused) { audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
             else { audio.pause(); document.getElementById('playBtn').innerText = "▶"; }
@@ -242,9 +211,7 @@
         function seek(e) { audio.currentTime = (e.offsetX / e.currentTarget.offsetWidth) * audio.duration; }
         function setVolume(v) { audio.volume = v; }
 
-        // --- GALERIA E CONTEÚDO ---
         function openRight(mode) {
-            document.getElementById('profile-stats').style.display = 'none';
             const right = document.getElementById('content-right');
             const body = document.getElementById('right-body');
             right.style.display = "block";
@@ -267,7 +234,7 @@
                 body.innerHTML = `<div style="color:#00f2ff;">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
             }
         }
-        function closeRight() { document.getElementById('content-right').style.display='none'; document.getElementById('profile-stats').style.display='flex'; }
+        function closeRight() { document.getElementById('content-right').style.display='none'; }
         function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
         function startStars() {
