@@ -15,45 +15,39 @@
             cursor: default;
         }
 
-        /* --- EFEITO DE LUZES PASSANDO (MELHORADO: MAIS SUAVE E BONITO) --- */
-        body::before {
-            content: ""; position: fixed; top: -150%; left: -150%; width: 400%; height: 400%;
-            /* Mistura suave com as cores do tema e branco puro */
+        /* --- EFEITO DE LUZES (CORRIGIDO: AGORA NO FUNDO) --- */
+        .light-effect-layer {
+            position: fixed; top: -150%; left: -150%; width: 400%; height: 400%;
             background: linear-gradient(135deg, transparent 40%, var(--main-color) 48%, #ffffff 50%, var(--main-color) 52%, transparent 60%);
-            /* Blur intenso para transformar linhas em rastros esfumaçados (Auroras) */
-            backdrop-filter: blur(100px);
-            animation: lightSweep 15s linear infinite; pointer-events: none; z-index: 2;
+            animation: lightSweep 15s linear infinite; pointer-events: none; 
+            z-index: -1; /* Joga para trás de tudo */
+            opacity: 0.15;
+            filter: blur(80px); /* Usando filter em vez de backdrop para não sumir com o resto */
         }
 
         @keyframes lightSweep {
-            0% { transform: translate(-25%, -25%) rotate(0deg); opacity: 0; }
-            5% { opacity: 0.2; }
-            50% { transform: translate(0%, 0%) rotate(180deg); opacity: 0.1; }
-            95% { opacity: 0.2; }
-            100% { transform: translate(-25%, -25%) rotate(360deg); opacity: 0; }
+            0% { transform: translate(-25%, -25%) rotate(0deg); }
+            100% { transform: translate(0%, 0%) rotate(360deg); }
         }
 
-        /* Luzes piscando no fundo (MELHORADO: PULSO ATMOSFÉRICO SUAVE) */
         .ambient-light {
-            position: fixed; width: 150%; height: 150%; top: -25%; left: -25%;
-            /* Borda ultra suave para simular pulso orgânico */
-            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, rgba(0,0,0,0.2) 60%, transparent 80%);
-            opacity: 0; pointer-events: none; z-index: 1;
-            animation: ambientPulse 20s ease-in-out infinite;
+            position: fixed; width: 100%; height: 100%; top: 0; left: 0;
+            background: radial-gradient(circle at 50% 50%, var(--main-color) 0%, transparent 70%);
+            opacity: 0; pointer-events: none; z-index: -2;
+            animation: ambientPulse 12s ease-in-out infinite;
         }
 
         @keyframes ambientPulse {
-            0%, 100% { opacity: 0; transform: scale(1); }
-            48%, 52% { opacity: 0.15; transform: scale(1.05); }
-            50% { opacity: 0.25; transform: scale(1.1); } /* Pulso mais forte, porém suave */
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.2; }
         }
 
-        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
         /* --- TELA DE ENTRADA --- */
         #login-screen {
-            position: fixed; z-index: 100; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); display: flex;
+            position: fixed; z-index: 1000; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 1s ease;
         }
@@ -61,7 +55,6 @@
             background: rgba(10, 10, 20, 0.8); padding: 40px; border-radius: 20px;
             border: 2px solid var(--main-color); text-align: center;
             backdrop-filter: blur(15px); box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
-            z-index: 101;
         }
         input[type="password"] {
             padding: 12px; border-radius: 8px; border: 1px solid var(--main-color);
@@ -75,7 +68,6 @@
             font-family: 'Orbitron', sans-serif; font-weight: 700; text-transform: uppercase;
             box-shadow: 0 0 20px var(--main-color);
             animation: neonPulse 1.5s infinite alternate; transition: 0.3s;
-            backface-visibility: hidden;
         }
 
         @keyframes neonPulse {
@@ -119,7 +111,7 @@
         .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px var(--main-color); transform: scale(1.05); }
 
         #ui-tools {
-            position: fixed; bottom: 20px; right: 20px; z-index: 1000001;
+            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
             display: none; gap: 10px; align-items: flex-end;
         }
 
@@ -133,7 +125,6 @@
             color: var(--main-color); padding: 8px 12px; border-radius: 4px;
             cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: bold;
         }
-        .color-btn:hover { background: var(--main-color); color: #000; }
 
         /* --- SLIDER CENTRAL --- */
         .slider-container {
@@ -155,8 +146,6 @@
 
         /* --- PLAYER --- */
         .player-card { margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px; border-radius: 15px; border: 1px solid var(--main-color); }
-        .track-info { font-size: 0.65rem; color: var(--main-color); margin-bottom: 10px; text-transform: uppercase; }
-        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; }
         .progress-bar { width: 0%; height: 100%; background: var(--main-color); box-shadow: 0 0 8px var(--main-color); }
         .volume-slider { -webkit-appearance: none; width: 60%; height: 3px; background: rgba(0, 242, 255, 0.3); outline: none; }
         .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: var(--main-color); border-radius: 50%; cursor: pointer; }
@@ -167,17 +156,11 @@
             border-radius: 25px; padding: 30px; display: none; overflow-y: auto;
             position: absolute; right: 40px; top: 40px; bottom: 40px; left: 400px; z-index: 60;
         }
-
-        .header-right { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px; }
-        .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-        .galeria-grid img { width: 100%; border: 1px solid var(--main-color); border-radius: 8px; transition: 0.4s ease; cursor: zoom-in; }
-        .galeria-grid img:hover { border-color: #fff; transform: scale(1.08); box-shadow: 0 0 15px var(--main-color); }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body onload="init()">
 
+    <div class="light-effect-layer"></div>
     <div class="ambient-light"></div>
     <canvas id="star-canvas"></canvas>
 
@@ -271,7 +254,6 @@
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-
             for(let i=0; i<100; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
@@ -282,26 +264,18 @@
                     twinkle: Math.random() * 0.05
                 });
             }
-
             function drawStar(x, y, radius, opacity) {
                 const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
                 gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
-                gradient.addColorStop(0.2, `rgba(255, 255, 255, ${opacity * 0.8})`);
                 gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillStyle = gradient; ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
             }
-
             function anim() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 stars.forEach(s => {
-                    s.opacity += s.twinkle;
-                    if(s.opacity > 1 || s.opacity < 0.1) s.twinkle = -s.twinkle;
+                    s.opacity += s.twinkle; if(s.opacity > 1 || s.opacity < 0.1) s.twinkle = -s.twinkle;
                     drawStar(s.x, s.y, s.size * (0.8 + s.opacity * 0.5), s.opacity);
-                    s.y -= s.speed;
-                    if(s.y < 0) s.y = canvas.height;
+                    s.y -= s.speed; if(s.y < 0) s.y = canvas.height;
                 });
                 requestAnimationFrame(anim);
             }
@@ -350,7 +324,6 @@
                     document.getElementById('login-screen').style.display='none';
                     document.getElementById('main-profile').style.display='flex';
                     document.getElementById('ui-tools').style.display='flex';
-                    carregarContadores();
                     setTimeout(() => { document.getElementById('main-profile').style.opacity='1'; audio.play(); }, 50);
                 }, 1000);
             } else alert("Senha incorreta!");
