@@ -6,6 +6,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
 
+        /* Lógica das cores aplicada sobre o seu estilo original */
         :root {
             --main-color: #00f2ff;
         }
@@ -14,10 +15,16 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background-color: #000;
             font-family: 'Orbitron', sans-serif; color: #fff;
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            cursor: default;
+            
+            /* SEGURANÇA: Impede a seleção de texto */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE10+/Edge */
+            user-select: none;         /* Padrão (Chrome, Opera, etc) */
         }
 
-        /* --- SISTEMA DE SEGURANÇA --- */
+        /* --- SISTEMA DE SEGURANÇA (ESTILO) --- */
         #copyright-alert {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.95); border: 2px solid var(--main-color);
@@ -51,15 +58,20 @@
         .btn-enter {
             padding: 12px 40px; background: var(--main-color); color: #000;
             border: none; border-radius: 8px; cursor: pointer;
-            font-family: 'Orbitron', sans-serif; font-weight: 700; text-transform: uppercase;
-            box-shadow: 0 0 20px var(--main-color); animation: neonPulse 1.5s infinite alternate;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700; text-transform: uppercase;
+            box-shadow: 0 0 20px var(--main-color);
+            animation: neonPulse 1.5s infinite alternate;
             transition: 0.3s;
+            backface-visibility: hidden;
         }
 
         @keyframes neonPulse {
             from { box-shadow: 0 0 10px var(--main-color), 0 0 20px var(--main-color); filter: brightness(1); }
             to { box-shadow: 0 0 30px var(--main-color), 0 0 50px var(--main-color); filter: brightness(1.4); }
         }
+
+        .btn-enter:hover { animation: none; background: #fff; box-shadow: 0 0 60px var(--main-color); transform: scale(1.05); }
 
         /* --- LAYOUT PRINCIPAL --- */
         #main-profile {
@@ -82,9 +94,13 @@
 
         .animated-gradient-text {
             background: linear-gradient(to right, var(--main-color), #ffffff, var(--main-color));
-            background-size: 200% auto; color: transparent;
-            -webkit-background-clip: text; background-clip: text;
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
             animation: gradientShift 3s linear infinite;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+            display: inline-block;
         }
 
         @keyframes gradientShift { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
@@ -92,19 +108,20 @@
         .menu-btn {
             width: 100%; padding: 15px; margin: 10px 0; background: transparent;
             border: 2px solid var(--main-color); color: var(--main-color); cursor: pointer;
-            border-radius: 10px; font-family: 'Orbitron', sans-serif; transition: 0.3s ease;
+            border-radius: 10px; font-family: 'Orbitron', sans-serif;
+            transition: 0.3s ease; font-size: 0.85rem;
         }
+        .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px var(--main-color); transform: scale(1.05); }
 
-        /* AJUSTE: Ferramentas no Lado Inferior Esquerdo */
         #ui-tools {
-            position: fixed; bottom: 20px; left: 20px; z-index: 1000001;
-            display: none; gap: 10px; align-items: flex-start; flex-direction: column;
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000001;
+            display: none; gap: 10px; align-items: flex-end;
         }
 
         #visit-counter {
             background: rgba(0, 0, 0, 0.9); border: 1px solid var(--main-color);
-            padding: 8px 15px; border-radius: 4px; display: flex;
-            flex-direction: column; align-items: center; min-width: 80px;
+            padding: 6px 12px; border-radius: 4px; display: flex;
+            flex-direction: column; align-items: center;
         }
 
         .color-btn {
@@ -113,6 +130,7 @@
             cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 10px;
             font-weight: bold; transition: 0.3s;
         }
+        .color-btn:hover { background: var(--main-color); color: #000; }
 
         .slider-container {
             flex: 1; display: flex; flex-direction: column; 
@@ -125,14 +143,19 @@
         .slide-img {
             position: absolute; width: 280px; height: 380px;
             object-fit: cover; border-radius: 15px; border: 2px solid var(--main-color);
-            box-shadow: 0 0 30px var(--main-color); transition: all 0.8s ease-in-out; opacity: 0;
+            box-shadow: 0 0 30px var(--main-color);
+            transition: all 0.8s ease-in-out; opacity: 0;
         }
         .slide-img.active { opacity: 1; transform: translateZ(100px); z-index: 5; }
         .slide-img.prev { opacity: 0.4; transform: translateX(-250px) rotateY(25deg) scale(0.8); z-index: 2; }
         .slide-img.next { opacity: 0.4; transform: translateX(250px) rotateY(-25deg) scale(0.8); z-index: 2; }
 
         .player-card { margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px; border-radius: 15px; border: 1px solid var(--main-color); }
+        .track-info { font-size: 0.65rem; color: var(--main-color); margin-bottom: 10px; text-transform: uppercase; }
+        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; }
         .progress-bar { width: 0%; height: 100%; background: var(--main-color); box-shadow: 0 0 8px var(--main-color); }
+        .volume-slider { -webkit-appearance: none; width: 60%; height: 3px; background: rgba(0, 242, 255, 0.3); outline: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: var(--main-color); border-radius: 50%; cursor: pointer; }
 
         #content-right {
             flex: 1; background: rgba(0, 0, 0, 0.85);
@@ -141,14 +164,19 @@
             backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
             position: absolute; right: 40px; top: 40px; bottom: 40px; left: 400px; z-index: 60;
         }
+
+        .header-right { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px; }
         .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
         .galeria-grid img { width: 100%; border: 1px solid var(--main-color); border-radius: 8px; transition: 0.4s ease; cursor: zoom-in; }
+        .galeria-grid img:hover { border-color: #fff; transform: scale(1.08); box-shadow: 0 0 15px var(--main-color); }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body onload="init()">
 
     <div id="copyright-alert">Copyright - Acesso Proibido</div>
+
     <canvas id="star-canvas"></canvas>
 
     <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:15000; justify-content:center; align-items:center;">
@@ -165,11 +193,11 @@
     </div>
 
     <div id="ui-tools">
+        <button class="color-btn" onclick="changeTheme()">🎨 COR</button>
         <div id="visit-counter">
-            <span style="color: var(--main-color); font-size: 9px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">Visitas</span>
-            <span id="count-number" style="color: #fff; font-size: 20px; font-family: monospace; font-weight: bold;">00000</span>
+            <span style="color: var(--main-color); font-size: 8px; letter-spacing: 1px;">VISITAS</span>
+            <span id="count-number" style="color: #fff; font-size: 18px; font-family: monospace;">...</span>
         </div>
-        <button class="color-btn" onclick="changeTheme()">🎨 ALTERAR COR</button>
     </div>
 
     <div id="main-profile">
@@ -182,16 +210,16 @@
             <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
 
             <div class="player-card">
-                <div class="track-info" id="trackName" style="font-size: 10px; color: var(--main-color); margin-bottom: 5px;">Carregando...</div>
-                <div class="progress-container" onclick="seek(event)" style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); margin-bottom: 10px; cursor: pointer;">
-                    <div class="progress-bar" id="progBar" style="height: 100%;"></div>
+                <div class="track-info" id="trackName">Carregando...</div>
+                <div class="progress-container" onclick="seek(event)">
+                    <div class="progress-bar" id="progBar"></div>
                 </div>
                 <div style="display:flex; justify-content:space-around; margin-bottom:10px;">
                     <button class="btn-enter" style="padding:5px 10px; animation: none;" onclick="prevTrack()">⏮</button>
                     <button class="btn-enter" style="padding:5px 10px; animation: none;" id="playBtn" onclick="togglePlay()">⏸</button>
                     <button class="btn-enter" style="padding:5px 10px; animation: none;" onclick="nextTrack()">⏭</button>
                 </div>
-                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)" style="width: 80%;">
+                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
                 <audio id="bgMusic" loop ontimeupdate="updateProgress()"></audio>
             </div>
         </div>
@@ -211,8 +239,20 @@
     </div>
 
     <script>
-        // CONFIGURAÇÕES
-        const ID_VISITAS = "wrs_galeria_v3_2026"; // Novo ID para começar do zero
+        // --- SISTEMA DE SEGURANÇA (JS) ---
+        function mostrarAviso() {
+            const aviso = document.getElementById('copyright-alert');
+            aviso.style.display = 'block';
+            setTimeout(() => { aviso.style.display = 'none'; }, 2000);
+        }
+        document.addEventListener('contextmenu', (e) => { e.preventDefault(); mostrarAviso(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'i' || e.key === 'I')) {
+                e.preventDefault(); mostrarAviso();
+            }
+        });
+
+        const ID_VISITAS = "perfil_gabriel_2026_unique"; 
         const cores = ["#00f2ff", "#ff0000", "#ffff00", "#00ff00", "#ff00ff", "#ff8800", "#ffffff"];
         let corIndex = 0;
 
@@ -221,21 +261,17 @@
             document.documentElement.style.setProperty('--main-color', cores[corIndex]);
         }
 
-        function mostrarAviso() {
-            const aviso = document.getElementById('copyright-alert');
-            aviso.style.display = 'block';
-            setTimeout(() => { aviso.style.display = 'none'; }, 2000);
-        }
-
-        document.addEventListener('contextmenu', (e) => { e.preventDefault(); mostrarAviso(); });
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && ['u','c','s','i'].includes(e.key.toLowerCase())) { e.preventDefault(); mostrarAviso(); }
-        });
-
-        const fotosGaleria = ["https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", "https://i.imgur.com/pTlq477.png"];
-        const playlist = [
+        let stars = [];
+        const fotosGaleria = [
+            "https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", 
+            "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", 
+            "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", 
+            "https://i.imgur.com/pTlq477.png"
+        ];
+       const playlist = [
             { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
-            { name: "The Sound of Silence – Rising", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" }
+            { name: "The Sound of Silence – Rising to the Night", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" },
+            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=0yenl8sh&raw=1" }
         ];
 
         let currentTrack = 0;
@@ -252,9 +288,8 @@
             try {
                 const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
                 const dataV = await resV.json();
-                let num = dataV.count || dataV.value || 0;
-                document.getElementById('count-number').innerText = num.toString().padStart(5, '0');
-            } catch(e) { document.getElementById('count-number').innerText = "00001"; }
+                document.getElementById('count-number').innerText = dataV.count || dataV.value;
+            } catch(e) { document.getElementById('count-number').innerText = "1"; }
         }
 
         function setupSlider() {
@@ -280,10 +315,17 @@
             updateSlider(); setInterval(updateSlider, 3000);
         }
 
-        function togglePlay() { audio.paused ? (audio.play(), document.getElementById('playBtn').innerText="⏸") : (audio.pause(), document.getElementById('playBtn').innerText="▶"); }
+        function togglePlay() {
+            if (audio.paused) { audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
+            else { audio.pause(); document.getElementById('playBtn').innerText = "▶"; }
+        }
         function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(); }
         function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(); }
-        function loadTrack() { audio.src = playlist[currentTrack].url; document.getElementById('trackName').innerText = playlist[currentTrack].name; audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
+        function loadTrack() {
+            audio.src = playlist[currentTrack].url;
+            document.getElementById('trackName').innerText = playlist[currentTrack].name;
+            audio.play(); document.getElementById('playBtn').innerText = "⏸";
+        }
         function updateProgress() { document.getElementById('progBar').style.width = (audio.currentTime / audio.duration) * 100 + "%"; }
         function seek(e) { audio.currentTime = (e.offsetX / e.currentTarget.offsetWidth) * audio.duration; }
         function setVolume(v) { audio.volume = v; }
@@ -300,20 +342,23 @@
                 rightTitle.innerText = "MINHAS FOTOS";
                 let gridHTML = `<div class="galeria-grid">`;
                 fotosGaleria.forEach(src => { gridHTML += `<img src="${src}" onclick="zoom(this.src)">`; });
-                gridHTML += `</div>`; body.innerHTML = gridHTML;
+                gridHTML += `</div>`;
+                body.innerHTML = gridHTML;
             } else {
                 rightTitle.innerText = "LISTA DE AMIGOS";
-                body.innerHTML = `<div style="color:var(--main-color);">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando<br>• Promise</div>`;
+                body.innerHTML = `<div style="color:var(--main-color);">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
             }
         }
-        function closeRight() { document.getElementById('content-right').style.display='none'; document.getElementById('center-slider').style.visibility = "visible"; }
+        function closeRight() { 
+            document.getElementById('content-right').style.display='none'; 
+            document.getElementById('center-slider').style.visibility = "visible";
+        }
         function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
 
         function startStars() {
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            let stars = [];
             for(let i=0; i<150; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5, speed:Math.random()*0.2});
             function anim() {
                 ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#fff";
