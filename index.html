@@ -16,6 +16,12 @@
             overflow: hidden; background-color: #000;
             font-family: 'Orbitron', sans-serif; color: #fff;
             cursor: default;
+            
+            /* SEGURANÇA: Impede a seleção de texto */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE10+/Edge */
+            user-select: none;         /* Padrão (Chrome, Opera, etc) */
         }
 
         /* --- SISTEMA DE SEGURANÇA (ESTILO) --- */
